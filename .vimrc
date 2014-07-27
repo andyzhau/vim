@@ -19,8 +19,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " features
-Plugin 'EasyMotion'
-Plugin 'Gundo'
+Plugin 'Lokaltog/vim-easymotion'
 Plugin 'Syntastic'
 Plugin 'Tagbar'
 Plugin 'The-NERD-Commenter'
@@ -28,13 +27,14 @@ Plugin 'ZoomWin'
 Plugin 'ack.vim'
 Plugin 'bling/vim-airline'
 Plugin 'ctrlp.vim'
+Plugin 'edkolev/promptline.vim'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'fugitive.vim'
+Plugin 'godlygeek/tabular'
 Plugin 'mhinz/vim-signify'
 Plugin 'scrooloose/nerdtree'
+Plugin 'sjl/gundo.vim'
 Plugin 'surround.vim'
-
-Plugin 'edkolev/promptline.vim'
 
 " language bundles
 Plugin 'indentpython'
@@ -172,6 +172,9 @@ nmap <C-t> :split<CR><C-w>j:e<SPACE>
 imap <leader>d <ESC>:Ex<CR>
 nmap <leader>d :Ex<CR>
 
+" search
+nmap <leader>/ :noh<CR>
+
 " tabs and buffers
 nnoremap <silent> -   :bprevious<CR>
 nnoremap <silent> =   :bnext<CR>
@@ -264,5 +267,51 @@ let g:Powerline_symbols         = 'fancy'
 let g:airline_theme             = 'solarized'
 
 let g:airline#extensions#tabline#enabled = 1
+
+" }}}
+
+" Plugin - Gundo {{{
+
+nmap <leader>u :GundoToggle<CR>
+
+" }}}
+
+" Plugin - Tabular {{{
+
+nmap <Leader>t= :Tabularize /=<CR>
+vmap <Leader>t= :Tabularize /=<CR>
+nmap <Leader>t: :Tabularize /:\zs<CR>
+vmap <Leader>t: :Tabularize /:\zs<CR>
+
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
+
+" }}}
+
+" Plugin - EasyMotion {{{
+
+" Gif config
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+
+" These `n` & `N` mappings are options. You do not have to map `n` & `N` to
+" EasyMotion.
+" Without these mappings, `n` & `N` works fine. (These mappings just provide
+" different highlight method and have some other features )
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
+
+let g:EasyMotion_smartcase        = 1
+let g:EasyMotion_use_smartsign_us = 1 " US layout
 
 " }}}
