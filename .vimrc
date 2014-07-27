@@ -1,6 +1,10 @@
-""""""""""""""""""""""""""""""
-" Vundle
-""""""""""""""""""""""""""""""
+" vim:fdm=marker
+
+" Environment {{{
+
+" }}}
+
+" Vundle Plugins {{{
 
 set nocompatible              " be iMproved, required
 filetype off                  " required
@@ -15,180 +19,250 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " features
-Bundle 'Lokaltog/powerline-fonts'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'bling/vim-airline'
-Bundle 'flazz/vim-colorschemes'
-Bundle 'kien/ctrlp.vim'
-Bundle 'mileszs/ack.vim'
-Bundle 'tpope/vim-fugitive'
-Bundle 'vim-scripts/ZoomWin'
+Plugin 'EasyMotion'
+Plugin 'Gundo'
+Plugin 'Syntastic'
+Plugin 'Tagbar'
+Plugin 'The-NERD-Commenter'
+Plugin 'ZoomWin'
+Plugin 'ack.vim'
+Plugin 'bling/vim-airline'
+Plugin 'ctrlp.vim'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'fugitive.vim'
+Plugin 'mhinz/vim-signify'
+Plugin 'scrooloose/nerdtree'
+Plugin 'surround.vim'
+
+Plugin 'edkolev/promptline.vim'
 
 " language bundles
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'pangloss/vim-javascript'
-Bundle 'tfnico/vim-gradle'
+Plugin 'indentpython'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'tfnico/vim-gradle'
+Plugin 'elzr/vim-json'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+" }}}
 
-""""""""""""""""""""""""""""""
-" Customized settings
-""""""""""""""""""""""""""""""
+" Basics - syntax, indent, search, etc. {{{
 
+" syntax
 syntax on
 
-set number
-set incsearch
-set showcmd
-set ruler
-set hlsearch
-set showmatch
+" filetype
+filetype on
+filetype plugin on
+filetype indent on
+
+" leader key
 let mapleader=','
-set expandtab
+
+" line number
+set number
+highlight CursorLineNR cterm=bold
+
+" <c-p>, <c-n> complete range, exclude ctags
+set complete-=t
+
+" line limit
+set colorcolumn=+1
+set textwidth=80
+
+" indent
 set autoindent
 set cindent
+set expandtab
 set shiftwidth=2
-set textwidth=80
 set tabstop=2
-set colorcolumn=+1
+
+" search
+set hlsearch
+set ignorecase
+set incsearch
+set showmatch
 set smartcase
-set ic
-set undolevels=50000
-set laststatus=2
 
-" tell it to use an undo file
+" ruler
+set ruler
+
+" disable swap file
+set noswapfile
+
+" allow to open new file when current is modified
+set hidden
+
+" undo
+set undodir=~/.vimundo/
 set undofile
+set undolevels=50000
 
-" set a directory to store the undo history
-set undodir=/home/yourname/.vimundo/
-set cpt-=t
+" fold
+set foldlevel=1         "this is just what i use
+set foldmethod=syntax   "fold based on indent
+set foldnestmax=10      "deepest fold is 10 levels
+set nofoldenable        "dont fold by default
 
 " make backspace work like most other apps
 set backspace=2
 set backspace=indent,eol,start
 
-set noswapfile
+" show status bar when single tab
+set laststatus=2
 
-filetype on
-filetype plugin on
-filetype indent on
+" show (partial) command in the last line of the screen.
+set showcmd
 
+" ctags
+set tags=ctags;/;~/workspace/ctags
+
+" ignore files
+set wildignore+=*/tmp/*,*.so,*.swp
+
+" highlight the current line use
+set cursorline
+
+" uncomment to highlight the current column use
+" set cursorcolumn
+
+" }}}
+
+" UI {{{
+
+" color theme, usually need to match the terminal theme
+color solarized   " darkblue
+
+" highlight extra whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
-au filetype * match ExtraWhitespace /\s\+$/
-au filetype * match Search /\%<81v.\%>77v/
-au filetype * match ErrorMsg /\%>80v.\+/
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
 
-" Highlight trailing whitespace
-hi TrailingSpace ctermbg=1
-au filetype * match TrailingSpace "\s\+\n"
+" }}}
 
-au BufRead,BufNewFile *.coffiew set filetype=coffee
+" Key (re)mappings {{{
 
-" Color for Identifier
-" color darkblue
-color blueprint
-
+" file saving
 imap <leader>w <ESC>:w<CR>
 nmap <leader>w :w<CR>
+vmap <leader>w <C-c>:w<CR>
+nmap <leader>ww :w!<CR>
+
+" quite
 imap <silent> <leader>q <ESC>:q<CR>
 nmap <silent> <leader>q :q<CR>
 nmap <silent> <leader>a :qa<CR>
 
+" window switch
 nmap <C-h> <C-w>h
 nmap <C-l> <C-w>l
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 
-" Fast to open a new window
-nmap <C-n> :vsplit<cr><C-w>l:e<space>
-" nmap <C-t> :split<cr><C-w>j:e<space>
+" split window
+nmap <C-n> :vsplit<CR><C-w>l:e<SPACE>
+nmap <C-t> :split<CR><C-w>j:e<SPACE>
 
-" Fast to open a new window
-nmap <C-n> :vsplit<cr><C-w>l:e<space>
-" nmap <C-t> :split<cr><C-w>j:e<space>
-
-" Fast to open related files
-" imap <leader>h <ESC>:e<SPACE>%:r.h<CR>
-" nmap <leader>h :e<SPACE>%:r.h<CR>
-
-" imap <leader>j <ESC>:e<SPACE>%:r.cc<CR>
-" nmap <leader>j :e<SPACE>%:r.cc<CR>
-
-imap <leader>b <ESC>:e<SPACE>%:h/BUILD<CR>
-nmap <leader>b :e<SPACE>%:h/BUILD<CR>
-
+" open current directory
 imap <leader>d <ESC>:Ex<CR>
 nmap <leader>d :Ex<CR>
 
-imap <leader>f <ESC>:Ex<CR>:e<space><C-r>%
-nmap <leader>f :Ex<CR>:e<space><C-r>%
+" tabs and buffers
+nnoremap <silent> -   :bprevious<CR>
+nnoremap <silent> =   :bnext<CR>
+" nnoremap <silent> bw  :bwipeout<CR>
+" nnoremap <silent> b1  :bfirst<CR>
+" nnoremap <silent> b2  :buffer 2<CR>
+" nnoremap <silent> b3  :buffer 3<CR>
+" nnoremap <silent> b4  :buffer 4<CR>
+" nnoremap <silent> b5  :buffer 5<CR>
+" nnoremap <silent> b6  :buffer 6<CR>
+" nnoremap <silent> b7  :buffer 7<CR>
+" nnoremap <silent> b8  :buffer 8<CR>
+" nnoremap <silent> b9  :blast<CR>
 
-" imap <leader>x <ESC>:TagbarToggle<CR>
-" nmap <leader>x :TagbarToggle<CR>
+nnoremap <silent> tl  :tabnext<CR>
+nnoremap <silent> th  :tabprev<CR>
+nnoremap <silent> t1  :tabfirst<CR>
+nnoremap <silent> t2  :tabn 2<CR>
+nnoremap <silent> t3  :tabn 3<CR>
+nnoremap <silent> t4  :tabn 4<CR>
+nnoremap <silent> t5  :tabn 5<CR>
+nnoremap <silent> t6  :tabn 6<CR>
+nnoremap <silent> t7  :tabn 7<CR>
+nnoremap <silent> t8  :tabn 8<CR>
+nnoremap <silent> t9  :tablast<CR>
+nnoremap <silent> te  :tabedit<Space>
+nnoremap <silent> tn  :tabnew<CR>
+nnoremap <silent> tw  :tabclose<CR>
 
-imap <leader>cp <ESC>:CoffeeCompile<CR>
-nmap <leader>cp :CoffeeCompile<CR>
+" }}}
 
-:inoremap \fp <C-E>=getcwd()<C-E>
+" Language - Python {{{
 
-nnoremap <leader>n :NERDTreeFind<cr>
+autocmd Filetype python setl et ts=2 sw=2
 
-" Plugin - NERD Commenter
-let g:NERDShutUp = 1
-let g:NERDSpaceDelims = 1
-let g:NERDMapleader = ',c'
-let g:NERDAltComMap = g:NERDMapleader.'A'      " Default: a
-let g:NERDAppendComMap = g:NERDMapleader.'a'   " Default: A
-" let g:NERDComLineNestMap = g:NERDMapleader.'N'  Default: n
-" These mappings do not work
+" }}}
 
-set tags=ctags;/
-set tags+=~/workspace/ctags
+" Language - Trailing Whitespace {{{
 
-" TListCtags
-let Tlist_Ctags_Cmd = '/usr/bin/ctags'
-let Tlist_Inc_Winwidth = 0
-let s:tlist_def_scala_settings = 'scala;t:trait;c:class;T:type;' . 'm:method;C:constant;l:local;p:package;o:object'
+autocmd FileType c,cpp,java,javascript,php,python autocmd BufWritePre <buffer> :%s/\s\+$//e
 
-let g:tagbar_ctags_bin = '/usr/bin/ctags'
+" }}}
 
-" Git
-imap <leader>gaa <ESC>:GitAdd .<CR>
-nmap <leader>gaa :GitAdd .<CR>
+" Plugin - NERDTree {{{
 
+nnoremap <leader>f :NERDTreeFind<cr>
 
-" Open reviewboard on blameinformation.
-function! GitReview()
-  echom system("python ~/workspace/tools/gitview.py " . expand("<cword>"))
-endfunction
-nmap <leader>gr :call GitReview()<cr>
+" }}}
 
-set wildignore+=*/tmp/*,*.so,*.swp
+" Plugin - NERDCommenter {{{
 
-" Plugin - CtrlP
-" set unlimited files
-let g:ctrlp_max_files=0
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](.git|.hg|.svn|build|_codegen)$',
+let g:NERDShutUp                = 1
+let g:NERDSpaceDelims           = 1
+let g:NERDMapleader             = ',c'
+let g:NERDAltComMap             = g:NERDMapleader.'A'  " Default: a
+let g:NERDAppendComMap          = g:NERDMapleader.'a'  " Default: A
+
+" }}}
+
+" Plugin - Tagbar {{{
+
+let g:tagbar_ctags_bin          = '/usr/bin/ctags'
+
+nnoremap <silent> <leader>x :TagbarToggle<CR>
+
+" }}}
+
+" Plugin - Ctrlp {{{
+
+let g:ctrlp_max_files           = 0
+let g:ctrlp_custom_ignore       = {
+  \ 'dir':  '\v[\/](.git|.hg|.svn|build|_codegen|tmp)$',
   \ 'file': '\v\.(exe|so|dll|class|jar|war)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
 let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_use_caching = 1
+let g:ctrlp_use_caching         = 1
 
-nnoremap <leader>. :CtrlPTag<cr>
+nnoremap <leader>t :CtrlPTag<cr>
 
-nnoremap <silent> <Leader>b :TagbarToggle<CR>
+" }}}
 
+" Plugin - Airline {{{
 
-""""""""""""""""""""""""""""""
-" airline
-""""""""""""""""""""""""""""""
 let g:airline_theme             = 'luna'
 let g:airline_enable_branch     = 1
 let g:airline_enable_syntastic  = 1
 let g:airline_powerline_fonts   = 1
 let g:Powerline_symbols         = 'fancy'
+let g:airline_theme             = 'solarized'
+
+let g:airline#extensions#tabline#enabled = 1
+
+" }}}
