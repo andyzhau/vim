@@ -214,7 +214,20 @@ autocmd Filetype python setl et ts=2 sw=2
 
 " Language - Trailing Whitespace {{{
 
-autocmd FileType c,cpp,java,javascript,php,python autocmd BufWritePre <buffer> :%s/\s\+$//e
+augroup prewrites
+  autocmd!
+  autocmd FileType c,cpp,java,javascript,php,python,groovy,vim autocmd BufWritePre * silent! :%s/\s\+$//e | silent! %s#\($\n\s*\)\+\%$##
+augroup END
+
+" }}}
+
+" Language - Javascript, JSON {{{
+
+autocmd BufNewFile,BufRead *.pdsc set filetype=json
+
+" }}}
+
+" Language - Java {{{
 
 " }}}
 
@@ -301,17 +314,24 @@ endfunction
 " Plugin - EasyMotion {{{
 
 " Gif config
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
+" map  / <Plug>(easymotion-sn)
+" omap / <Plug>(easymotion-tn)
 
 " These `n` & `N` mappings are options. You do not have to map `n` & `N` to
 " EasyMotion.
 " Without these mappings, `n` & `N` works fine. (These mappings just provide
 " different highlight method and have some other features )
-map  n <Plug>(easymotion-next)
-map  N <Plug>(easymotion-prev)
+" map  n <Plug>(easymotion-next)
+" map  N <Plug>(easymotion-prev)
 
 let g:EasyMotion_smartcase        = 1
 let g:EasyMotion_use_smartsign_us = 1 " US layout
+
+" }}}
+
+" Plugin - Syntastic {{{
+
+let g:syntastic_java_checkstyle_classpath = "~/.vim/checkstyle-5.7/checkstyle-5.7-all.jar"
+let g:syntastic_java_checkstyle_conf_file = "~/.vim/checkstyle-5.7/sun_checks.xml"
 
 " }}}
