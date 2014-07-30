@@ -18,23 +18,26 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-" features
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'Syntastic'
-Plugin 'Tagbar'
-Plugin 'The-NERD-Commenter'
+" builtin
 Plugin 'ZoomWin'
 Plugin 'ack.vim'
+Plugin 'surround.vim'
+
+" features
+Plugin 'Lokaltog/vim-easymotion'
 Plugin 'bling/vim-airline'
-Plugin 'ctrlp.vim'
 Plugin 'edkolev/promptline.vim'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'fugitive.vim'
 Plugin 'godlygeek/tabular'
+Plugin 'juneedahamed/svnj.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'majutsushi/tagbar'
 Plugin 'mhinz/vim-signify'
+Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
-Plugin 'surround.vim'
 
 " language bundles
 Plugin 'indentpython'
@@ -117,7 +120,7 @@ set laststatus=2
 set showcmd
 
 " ctags
-set tags=ctags;/;~/workspace/ctags
+set tags=tags;~/workspace/tags
 
 " ignore files
 set wildignore+=*/tmp/*,*.so,*.swp
@@ -175,6 +178,10 @@ nmap <leader>d :Ex<CR>
 " search
 nmap <leader>/ :noh<CR>
 
+" autocomplete
+inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
+inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
+
 " tabs and buffers
 nnoremap <silent> -   :bprevious<CR>
 nnoremap <silent> =   :bnext<CR>
@@ -203,6 +210,9 @@ nnoremap <silent> t9  :tablast<CR>
 nnoremap <silent> te  :tabedit<Space>
 nnoremap <silent> tn  :tabnew<CR>
 nnoremap <silent> tw  :tabclose<CR>
+
+" copy file path
+:let @" = expand("%:p")
 
 " }}}
 
@@ -234,6 +244,8 @@ autocmd BufNewFile,BufRead *.pdsc set filetype=json
 " Plugin - NERDTree {{{
 
 nnoremap <leader>f :NERDTreeFind<cr>
+nnoremap <leader>ff :NERDTreeToggle<cr>
+nnoremap <leader>ft :NERDTree<cr>
 
 " }}}
 
@@ -331,7 +343,19 @@ let g:EasyMotion_use_smartsign_us = 1 " US layout
 
 " Plugin - Syntastic {{{
 
-let g:syntastic_java_checkstyle_classpath = "~/.vim/checkstyle-5.7/checkstyle-5.7-all.jar"
-let g:syntastic_java_checkstyle_conf_file = "~/.vim/checkstyle-5.7/sun_checks.xml"
+" let g:syntastic_debug                     = 1
+let g:syntastic_check_on_open             = 1
+let g:syntastic_java_checkers             = ['checkstyle']
+let g:syntastic_java_checkstyle_classpath = "~/.vim/libs/checkstyle/checkstyle-5.7-all.jar"
+let g:syntastic_java_checkstyle_conf_file = "~/.vim/configs/sun_checks.xml"
+
+" }}}
+
+" Plugin - Svnj {{{
+
+nmap <leader>b :SVNBlame<CR>
+
+let g:svnj_warn_branch_log = 0
+let g:svnj_window_max_size = 20
 
 " }}}
