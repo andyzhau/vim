@@ -21,10 +21,10 @@ Plugin 'gmarik/Vundle.vim'
 " builtin
 Plugin 'ZoomWin'
 Plugin 'ack.vim'
-Plugin 'surround.vim'
 
 " features
 Plugin 'Lokaltog/vim-easymotion'
+Plugin 'andyzhau/eclim-vim'
 Plugin 'bling/vim-airline'
 Plugin 'edkolev/promptline.vim'
 Plugin 'flazz/vim-colorschemes'
@@ -33,11 +33,12 @@ Plugin 'godlygeek/tabular'
 Plugin 'juneedahamed/svnj.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
-Plugin 'mhinz/vim-signify'
+" Plugin 'mhinz/vim-signify'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
+Plugin 'tpope/vim-surround'
 
 " language bundles
 Plugin 'indentpython'
@@ -55,6 +56,9 @@ filetype plugin indent on    " required
 
 " syntax
 syntax on
+
+" turn off compatible
+set nocompatible
 
 " filetype
 filetype on
@@ -181,6 +185,7 @@ nmap <leader>/ :noh<CR>
 " autocomplete
 inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
 inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
+inoremap <expr> <CR> ((pumvisible())?("\<Right>"):("\<CR>"))
 
 " tabs and buffers
 nnoremap <silent> -   :bprevious<CR>
@@ -254,8 +259,6 @@ nnoremap <leader>ft :NERDTree<cr>
 let g:NERDShutUp                = 1
 let g:NERDSpaceDelims           = 1
 let g:NERDMapleader             = ',c'
-let g:NERDAltComMap             = g:NERDMapleader.'A'  " Default: a
-let g:NERDAppendComMap          = g:NERDMapleader.'a'  " Default: A
 
 " }}}
 
@@ -344,11 +347,18 @@ let g:EasyMotion_use_smartsign_us = 1 " US layout
 " Plugin - Syntastic {{{
 
 " let g:syntastic_debug                     = 1
-let g:syntastic_check_on_open             = 1
+let g:syntastic_error_symbol              = "✗"
+let g:syntastic_warning_symbol            = "⚠"
+let g:syntastic_style_error_symbol        = "✗"
+let g:syntastic_style_warning_symbol      = "⚠"
+let g:syntastic_check_on_open             = 0
+let g:syntastic_echo_current_error        = 0
 let g:syntastic_java_checkers             = ['checkstyle']
 let g:syntastic_java_checkstyle_classpath = "~/.vim/libs/checkstyle/checkstyle-5.7-all.jar"
 let g:syntastic_java_checkstyle_conf_file = "~/.vim/configs/sun_checks.xml"
 
+" let g:syntastic_python_checkers           = ['pylint']
+let g:syntastic_python_pylint_args        = '--indent-string="  "'
 " }}}
 
 " Plugin - Svnj {{{
@@ -357,5 +367,36 @@ nmap <leader>b :SVNBlame<CR>
 
 let g:svnj_warn_branch_log = 0
 let g:svnj_window_max_size = 20
+
+" }}}
+
+" Plugin - Eclim {{{
+
+set completeopt-=preview
+
+let g:EclimLoclistSignText  = "⚠"
+let g:EclimFileTypeValidate = 1
+
+autocmd FileType java imap <buffer> <silent> <c-u> <c-x><c-u>
+
+autocmd FileType java imap <buffer> <silent> <c-i> <ESC>:JavaImport<CR>
+
+autocmd FileType java imap <buffer> <silent> <c-d> <ESC>:JavaDocComment<CR>
+
+autocmd FileType java vmap <buffer> <silent> <c-f> :JavaFormat<CR>
+
+autocmd FileType java imap <buffer> <silent> <c-o> <ESC>:JavaImportOrganize<CR>
+
+autocmd FileType java imap <buffer> <silent> <c-/>d <ESC>:JavaDelegate<CR>
+autocmd FileType java nmap <buffer> <silent> <c-/>d :JavaDelegate<CR>
+
+autocmd FileType java imap <buffer> <silent> <c-/>c <ESC>:JavaConstructor<CR>
+autocmd FileType java nmap <buffer> <silent> <c-/>c :JavaConstructor<CR>
+
+autocmd FileType java imap <buffer> <silent> <c-?> <ESC>:JavaCorrect<CR>
+autocmd FileType java nmap <buffer> <silent> <c-?> :JavaCorrect<CR>
+
+autocmd FileType java imap <buffer> <silent> <c-?>c <ESC>:JavaCallHierarchy!<CR>
+autocmd FileType java nmap <buffer> <silent> <c-?>c :JavaCallHierarchy!<CR>
 
 " }}}
