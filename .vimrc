@@ -33,8 +33,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'juneedahamed/svnj.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
-" Plugin 'mhinz/vim-signify'
-Plugin 'tpope/vim-fugitive'
+Plugin 'mhinz/vim-signify'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
@@ -302,6 +301,13 @@ let g:airline#extensions#tabline#enabled = 1
 " Plugin - Gundo {{{
 
 nmap <leader>u :GundoToggle<CR>
+
+" }}}
+
+" Plugin - Signify {{{
+
+let g:signify_disable_by_default = 1
+let g:signify_mapping_toggle     = '<leader>s'
 
 " }}}
 
