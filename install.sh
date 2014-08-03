@@ -8,6 +8,7 @@ if [ ! -d "$HOME/.backup" ]; then
   mv ~/.bash_profile ~/.backup
   mv ~/.bashrc ~/.backup
   mv ~/.git-prompt.sh ~/.backup
+  mv ~/.inputrc ~/.backup
   mv ~/.shell_prompt.sh ~/.backup
   mv ~/.vim ~/.backup
   mv ~/.vimrc ~/.backup
@@ -20,6 +21,7 @@ fi
 cp .bash_profile ~/
 cp .bashrc ~/
 cp .git-prompt.sh ~/
+cp .inputrc ~/
 cp .shell_prompt.sh ~/
 cp -r .vim ~/
 cp .vimrc ~/
