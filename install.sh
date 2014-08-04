@@ -2,6 +2,8 @@
 
 # backup existing files
 
+ROOT=`pwd`
+
 if [ ! -d "$HOME/.backup" ]; then
   mkdir ~/.backup
 
@@ -40,4 +42,11 @@ if [ -d "$HOME/.vim" ]; then
   mkdir -p ~/.vim/libs
 
   cp /tmp/checkstyle-5.7/checkstyle-5.7-all.jar ~/.vim/libs
+fi
+
+
+if [ -d "$HOME/.vim/bundle/vimproc.vim" ]; then
+  cd "$HOME/.vim/bundle/vimproc.vim"
+  make
+  cd $ROOT
 fi
