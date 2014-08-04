@@ -30,7 +30,6 @@ cp .vimrc ~/
 
 if [ ! -f "$HOME/.vim/libs/checkstyle-5.7-all.jar" ]; then
   git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-  vim +PluginInstall +qall
 
   rm /tmp/checkstyle-5.7-bin.zip
 
@@ -44,9 +43,15 @@ if [ ! -f "$HOME/.vim/libs/checkstyle-5.7-all.jar" ]; then
   cp /tmp/checkstyle-5.7/checkstyle-5.7-all.jar ~/.vim/libs
 fi
 
+vim +PluginInstall +qall
 
 if [ -d "$HOME/.vim/bundle/vimproc.vim" ]; then
   cd "$HOME/.vim/bundle/vimproc.vim"
   make
   cd $ROOT
 fi
+
+
+cd ~/.vim/bundle/YouCompleteMe
+./install.sh --clang-completer
+cd $ROOT

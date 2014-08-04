@@ -1,6 +1,7 @@
 source ~/.bash.git
 source ~/.git-prompt.sh
 source ~/.shell_prompt.sh
+source ~/.bash.linkedin
 
 alias ll='ls -lh'
 
@@ -11,11 +12,8 @@ export PATH=~/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/lib:/usr/lib:$LD_LIBRARY_PATH
 
 function go {
-if [ "$1" = "workspace" ]; then
-  cd "$HOME/workspace"
-fi
-if [ "$1" = "ws" ]; then
-  cd "$HOME/workspace"
+if [ "$1" = "home" ]; then
+  cd "$HOME"
 fi
 if [ -d "$HOME/workspace/$1_trunk" ]; then
   cd "$HOME/workspace/$1_trunk"
@@ -24,7 +22,7 @@ if [ -d "$HOME/workspace/$1" ]; then
   cd "$HOME/workspace/$1"
 fi
 if [ -z "$1" ]; then
-  cd "$HOME"
+  cd "$HOME/workspace"
 fi
 }
 
