@@ -24,16 +24,23 @@ Plugin 'ack.vim'
 
 " features
 Plugin 'Lokaltog/vim-easymotion'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'Shougo/vimshell.vim'
+Plugin 'SirVer/ultisnips'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'andyzhau/eclim-vim'
 Plugin 'bling/vim-airline'
 Plugin 'edkolev/promptline.vim'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'fugitive.vim'
 Plugin 'godlygeek/tabular'
+Plugin 'honza/vim-snippets'
 Plugin 'juneedahamed/svnj.vim'
+Plugin 'kchmck/vim-coffee-script'
 Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'mhinz/vim-signify'
+Plugin 'pthrasher/conqueterm-vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
@@ -41,10 +48,13 @@ Plugin 'sjl/gundo.vim'
 Plugin 'tpope/vim-surround'
 
 " language bundles
-Plugin 'indentpython'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'tfnico/vim-gradle'
 Plugin 'elzr/vim-json'
+Plugin 'indentpython'
+Plugin 'pangloss/vim-javascript'
+Plugin 'othree/html5.vim'
+Plugin 'syngan/vim-vimlint'
+Plugin 'tfnico/vim-gradle'
+Plugin 'ynkdir/vim-vimlparser'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -59,6 +69,9 @@ syntax on
 
 " turn off compatible
 set nocompatible
+
+" spell checking
+set spell spelllang=en_us
 
 " filetype
 filetype on
@@ -164,6 +177,7 @@ nmap <leader>ww :w!<CR>
 imap <silent> <leader>q <ESC>:q<CR>
 nmap <silent> <leader>q :q<CR>
 nmap <silent> <leader>a :qa<CR>
+nmap <silent> <leader>aa :qa!<CR>
 
 " window switch
 nmap <C-h> <C-w>h
@@ -183,8 +197,8 @@ nmap <leader>d :Ex<CR>
 nmap <leader>/ :noh<CR>
 
 " autocomplete
-inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
-inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
+" inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
+" inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
 inoremap <expr> <CR> ((pumvisible())?("\<Right>"):("\<CR>"))
 
 " tabs and buffers
@@ -227,6 +241,12 @@ autocmd Filetype python setl et ts=2 sw=2
 
 " }}}
 
+" Language - HTML {{{
+
+" autocmd FileType html setlocal foldmethod=indent
+
+" }}}
+
 " Language - Trailing Whitespace {{{
 
 augroup prewrites
@@ -243,6 +263,12 @@ autocmd BufNewFile,BufRead *.pdsc set filetype=json
 " }}}
 
 " Language - Java {{{
+
+" }}}
+
+" Language - Coffeescript {{{
+
+nmap <leader>cp :CoffeeCompile<SPACE>vert<CR>
 
 " }}}
 
@@ -275,7 +301,7 @@ nnoremap <silent> <leader>x :TagbarToggle<CR>
 let g:ctrlp_max_files           = 0
 let g:ctrlp_custom_ignore       = {
   \ 'dir':  '\v[\/](.git|.hg|.svn|build|_codegen|tmp)$',
-  \ 'file': '\v\.(exe|so|dll|class|jar|war)$',
+  \ 'file': '\v\.(exe|so|dll|class|jar|war|pyc|pyo|pyd)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
 let g:ctrlp_clear_cache_on_exit = 0
@@ -307,7 +333,14 @@ nmap <leader>u :GundoToggle<CR>
 " Plugin - Signify {{{
 
 let g:signify_disable_by_default = 1
-let g:signify_mapping_toggle     = '<leader>s'
+
+highlight link SignifySignAdd    DiffAdd
+highlight link SignifySignChange DiffChange
+highlight link SignifySignDelete DiffDelete
+
+highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
+highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
+highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
 
 " }}}
 
@@ -353,19 +386,25 @@ let g:EasyMotion_use_smartsign_us = 1 " US layout
 
 " Plugin - Syntastic {{{
 
-" let g:syntastic_debug                     = 1
+let g:syntastic_debug                     = 0
+let g:syntastic_enable_highlighting       = 0
 let g:syntastic_error_symbol              = "✗"
 let g:syntastic_warning_symbol            = "⚠"
 let g:syntastic_style_error_symbol        = "✗"
 let g:syntastic_style_warning_symbol      = "⚠"
 let g:syntastic_check_on_open             = 0
-let g:syntastic_echo_current_error        = 0
+let g:syntastic_echo_current_error        = 1
 let g:syntastic_java_checkers             = ['checkstyle']
 let g:syntastic_java_checkstyle_classpath = "~/.vim/libs/checkstyle/checkstyle-5.7-all.jar"
 let g:syntastic_java_checkstyle_conf_file = "~/.vim/configs/sun_checks.xml"
 
 " let g:syntastic_python_checkers           = ['pylint']
 let g:syntastic_python_pylint_args        = '--indent-string="  "'
+
+let g:syntastic_mode_map                  = { "mode": "passive",
+                                            \ "active_filetypes": [],
+                                            \ "passive_filetypes": [] }
+
 " }}}
 
 " Plugin - Svnj {{{
@@ -381,29 +420,59 @@ let g:svnj_window_max_size = 20
 
 set completeopt-=preview
 
-let g:EclimLoclistSignText  = "⚠"
-let g:EclimFileTypeValidate = 1
+let g:EclimLoclistSignText          = "⚠"
+let g:EclimFileTypeValidate         = 1
+let g:EclimJavascriptLintEnabled    = 0
+let g:EclimJavascriptIndentDisabled = 1
 
-autocmd FileType java imap <buffer> <silent> <c-u> <c-x><c-u>
+" autocmd FileType java imap <buffer> <silent> <c-u> <c-x><c-u>
 
-autocmd FileType java imap <buffer> <silent> <c-i> <ESC>:JavaImport<CR>
+" autocmd FileType java imap <buffer> <silent> <c-i> <ESC>:JavaImport<CR>
 
-autocmd FileType java imap <buffer> <silent> <c-d> <ESC>:JavaDocComment<CR>
+" autocmd FileType java imap <buffer> <silent> <c-d> <ESC>:JavaDocComment<CR>
 
-autocmd FileType java vmap <buffer> <silent> <c-f> :JavaFormat<CR>
+" autocmd FileType java vmap <buffer> <silent> <c-f> :JavaFormat<CR>
 
-autocmd FileType java imap <buffer> <silent> <c-o> <ESC>:JavaImportOrganize<CR>
+" autocmd FileType java imap <buffer> <silent> <c-o> <ESC>:JavaImportOrganize<CR>
 
-autocmd FileType java imap <buffer> <silent> <c-/>d <ESC>:JavaDelegate<CR>
-autocmd FileType java nmap <buffer> <silent> <c-/>d :JavaDelegate<CR>
+" autocmd FileType java imap <buffer> <silent> <c-/>d <ESC>:JavaDelegate<CR>
+" autocmd FileType java nmap <buffer> <silent> <c-/>d :JavaDelegate<CR>
 
-autocmd FileType java imap <buffer> <silent> <c-/>c <ESC>:JavaConstructor<CR>
-autocmd FileType java nmap <buffer> <silent> <c-/>c :JavaConstructor<CR>
+" autocmd FileType java imap <buffer> <silent> <c-/>c <ESC>:JavaConstructor<CR>
+" autocmd FileType java nmap <buffer> <silent> <c-/>c :JavaConstructor<CR>
 
-autocmd FileType java imap <buffer> <silent> <c-?> <ESC>:JavaCorrect<CR>
-autocmd FileType java nmap <buffer> <silent> <c-?> :JavaCorrect<CR>
+" autocmd FileType java imap <buffer> <silent> <c-?> <ESC>:JavaCorrect<CR>
+" autocmd FileType java nmap <buffer> <silent> <c-?> :JavaCorrect<CR>
 
-autocmd FileType java imap <buffer> <silent> <c-?>c <ESC>:JavaCallHierarchy!<CR>
-autocmd FileType java nmap <buffer> <silent> <c-?>c :JavaCallHierarchy!<CR>
+" autocmd FileType java imap <buffer> <silent> <c-?>c <ESC>:JavaCallHierarchy!<CR>
+" autocmd FileType java nmap <buffer> <silent> <c-?>c :JavaCallHierarchy!<CR>
+
+" }}}
+
+" Plugin - Ultisnips {{{
+
+" Trigger configuration. Do not use <tab> if you use
+" https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger         = "<c-y>"
+let g:UltiSnipsListSnippets          = "<c-l>"
+
+let g:snips_author_email             = "andy@nodeswork.com"
+let g:snips_author                   = "Yizhen Zhao"
+
+" let g:UltiSnipsJumpForwardTrigger  = "<c-b>"
+" let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
+
+let g:UltiSnipsEditSplit             = "vertical"
+
+" }}}
+
+" Plugin - Toggle mode {{{
+
+function ToggleMode()
+  execute "SyntasticToggleMode"
+  call sy#toggle()
+endfunction
+
+nmap <silent> <leader>s :call ToggleMode()<CR>
 
 " }}}
