@@ -14,8 +14,8 @@ if [ ! -d "$HOME/.backup" ]; then
   mv ~/.shell_prompt.sh ~/.backup
   mv ~/.vim ~/.backup
   mv ~/.vimrc ~/.backup
-else
-  rm -rf ~/.vim
+# else
+  # rm -rf ~/.vim
 fi
 
 # copy setting files
@@ -28,7 +28,7 @@ cp .shell_prompt.sh ~/
 cp -r .vim ~/
 cp .vimrc ~/
 
-if [ -d "$HOME/.vim" ]; then
+if [ ! -f "$HOME/.vim/libs/checkstyle-5.7-all.jar" ]; then
   git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
   vim +PluginInstall +qall
 
