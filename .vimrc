@@ -243,7 +243,7 @@ autocmd Filetype python setl et ts=2 sw=2
 
 " Language - HTML {{{
 
-" autocmd FileType html setlocal foldmethod=indent
+autocmd FileType html setlocal foldmethod=indent
 
 " }}}
 
