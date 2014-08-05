@@ -1,4 +1,4 @@
-" vim:fdm=marker
+" Vim configurations, put your own configurations under ~/.vimrc.local
 
 " Environment {{{
 
@@ -235,15 +235,23 @@ nnoremap <silent> tw  :tabclose<CR>
 
 " }}}
 
-" Language - Python {{{
+" Language Vim {{{
 
-autocmd Filetype python setl et ts=2 sw=2
+autocmd FileType vim setlocal foldmethod=marker
+autocmd FileType vim setlocal nospell
 
 " }}}
 
-" Language - HTML {{{
+" Language - Python {{{
 
-autocmd FileType html setlocal foldmethod=indent
+autocmd Filetype python setlocal et ts=2 sw=2
+
+" }}}
+
+" Language - HTML/XML {{{
+
+autocmd FileType html,xml setlocal foldmethod=indent
+autocmd FileType xml setlocal nospell
 
 " }}}
 
@@ -458,8 +466,9 @@ let g:EclimLoclistSignText          = "⚠"
 let g:UltiSnipsExpandTrigger         = "<c-y>"
 let g:UltiSnipsListSnippets          = "<c-l>"
 
-let g:snips_author_email             = "andy@nodeswork.com"
-let g:snips_author                   = "Yizhen Zhao"
+" Put these configs into ~/.vimrc.local
+" let g:snips_author_email             = "andy@nodeswork.com"
+" let g:snips_author                   = "Yizhen Zhao"
 
 " let g:UltiSnipsJumpForwardTrigger  = "<c-b>"
 " let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
@@ -479,9 +488,17 @@ nmap <silent> <leader>s :call ToggleMode()<CR>
 
 " }}}
 
-""" Plugin - YouCompleteMe {{{
+" Plugin - YouCompleteMe {{{
 
 let g:ycm_server_use_vim_stdout = 0
 " let g:ycm_server_log_level      = 'debug'
 
-""" }}}
+" }}}
+
+" Tail - source .vimrc.local {{{
+
+if filereadable(glob("~/.vimrc.local"))
+  source ~/.vimrc.local
+endif
+
+" }}}
