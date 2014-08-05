@@ -420,10 +420,12 @@ let g:svnj_window_max_size = 20
 
 set completeopt-=preview
 
-let g:EclimLoclistSignText          = "⚠"
+let g:EclimCssIndentDisabled        = 1
 let g:EclimFileTypeValidate         = 1
-let g:EclimJavascriptLintEnabled    = 0
+let g:EclimHtmlIndentDisabled       = 1
 let g:EclimJavascriptIndentDisabled = 1
+let g:EclimJavascriptLintEnabled    = 0
+let g:EclimLoclistSignText          = "⚠"
 
 " autocmd FileType java imap <buffer> <silent> <c-u> <c-x><c-u>
 
