@@ -476,3 +476,10 @@ endfunction
 nmap <silent> <leader>s :call ToggleMode()<CR>
 
 " }}}
+
+""" Plugin - YouCompleteMe {{{
+
+let g:ycm_server_use_vim_stdout = 0
+" let g:ycm_server_log_level      = 'debug'
+
+""" }}}

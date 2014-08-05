@@ -53,5 +53,5 @@ fi
 
 
 cd ~/.vim/bundle/YouCompleteMe
-./install.sh --clang-completer
+./install.sh # --clang-completer
 cd $ROOT
