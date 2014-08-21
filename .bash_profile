@@ -8,6 +8,7 @@ fi
 
 
 alias ll='ls -lh'
+alias s="search"
 
 export EDITOR=vim
 
