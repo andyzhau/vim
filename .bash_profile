@@ -1,7 +1,11 @@
 source ~/.bash.git
 source ~/.git-prompt.sh
 source ~/.shell_prompt.sh
-source ~/.bash.linkedin
+
+if [ -f ~/.bash.linkedin ]; then
+  source ~/.bash.linkedin
+fi
+
 
 alias ll='ls -lh'
 
