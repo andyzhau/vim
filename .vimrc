@@ -272,6 +272,8 @@ autocmd BufNewFile,BufRead *.pdsc set filetype=json
 
 " Language - Java {{{
 
+autocmd Filetype java setlocal omnifunc=eclim#php#complete#CodeComplete
+
 " }}}
 
 " Language - Coffeescript {{{
@@ -434,16 +436,20 @@ let g:EclimHtmlIndentDisabled       = 1
 let g:EclimJavascriptIndentDisabled = 1
 let g:EclimJavascriptLintEnabled    = 0
 let g:EclimLoclistSignText          = "⚠"
+let g:EclimCompletionMethod         = 'omnifunc'
+let g:EclimTempFilesEnable          = 0
 
 " autocmd FileType java imap <buffer> <silent> <c-u> <c-x><c-u>
 
-" autocmd FileType java imap <buffer> <silent> <c-i> <ESC>:JavaImport<CR>
+autocmd FileType java imap <buffer> <silent> <leader>ji <ESC>:JavaImport<CR>
 
-" autocmd FileType java imap <buffer> <silent> <c-d> <ESC>:JavaDocComment<CR>
+autocmd FileType java imap <buffer> <silent> <leader>jd <ESC>:JavaDocComment<CR>
+
+autocmd FileType java imap <buffer> <silent> <leader>jc <ESC>:JavaCorrect<CR>
 
 " autocmd FileType java vmap <buffer> <silent> <c-f> :JavaFormat<CR>
 
-" autocmd FileType java imap <buffer> <silent> <c-o> <ESC>:JavaImportOrganize<CR>
+autocmd FileType java imap <buffer> <silent> <c-o> <ESC>:JavaImportOrganize<CR>
 
 " autocmd FileType java imap <buffer> <silent> <c-/>d <ESC>:JavaDelegate<CR>
 " autocmd FileType java nmap <buffer> <silent> <c-/>d :JavaDelegate<CR>
@@ -456,6 +462,9 @@ let g:EclimLoclistSignText          = "⚠"
 
 " autocmd FileType java imap <buffer> <silent> <c-?>c <ESC>:JavaCallHierarchy!<CR>
 " autocmd FileType java nmap <buffer> <silent> <c-?>c :JavaCallHierarchy!<CR>
+
+" This next line recommended by Eclim installation instructions
+
 
 " }}}
 
