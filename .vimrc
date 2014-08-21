@@ -278,6 +278,8 @@ nnoremap <leader>f :NERDTreeFind<cr>
 nnoremap <leader>ff :NERDTreeToggle<cr>
 nnoremap <leader>ft :NERDTree<cr>
 
+let NERDTreeIgnore = ['\.pyc$']
+
 " }}}
 
 " Plugin - NERDCommenter {{{
