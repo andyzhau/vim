@@ -1,4 +1,4 @@
-" vim:fdm=marker
+" Vim configurations, put your own configurations under ~/.vimrc.local
 
 " Environment {{{
 
@@ -235,15 +235,23 @@ nnoremap <silent> tw  :tabclose<CR>
 
 " }}}
 
-" Language - Python {{{
+" Language Vim {{{
 
-autocmd Filetype python setl et ts=2 sw=2
+autocmd FileType vim setlocal foldmethod=marker
+autocmd FileType vim setlocal nospell
 
 " }}}
 
-" Language - HTML {{{
+" Language - Python {{{
 
-autocmd FileType html setlocal foldmethod=indent
+autocmd Filetype python setlocal et ts=2 sw=2
+
+" }}}
+
+" Language - HTML/XML {{{
+
+autocmd FileType html,xml setlocal foldmethod=indent
+autocmd FileType xml setlocal nospell
 
 " }}}
 
@@ -263,6 +271,8 @@ autocmd BufNewFile,BufRead *.pdsc set filetype=json
 " }}}
 
 " Language - Java {{{
+
+autocmd Filetype java setlocal omnifunc=eclim#php#complete#CodeComplete
 
 " }}}
 
@@ -428,16 +438,20 @@ let g:EclimHtmlIndentDisabled       = 1
 let g:EclimJavascriptIndentDisabled = 1
 let g:EclimJavascriptLintEnabled    = 0
 let g:EclimLoclistSignText          = "⚠"
+let g:EclimCompletionMethod         = 'omnifunc'
+let g:EclimTempFilesEnable          = 0
 
 " autocmd FileType java imap <buffer> <silent> <c-u> <c-x><c-u>
 
-" autocmd FileType java imap <buffer> <silent> <c-i> <ESC>:JavaImport<CR>
+autocmd FileType java imap <buffer> <silent> <leader>ji <ESC>:JavaImport<CR>
 
-" autocmd FileType java imap <buffer> <silent> <c-d> <ESC>:JavaDocComment<CR>
+autocmd FileType java imap <buffer> <silent> <leader>jd <ESC>:JavaDocComment<CR>
+
+autocmd FileType java imap <buffer> <silent> <leader>jc <ESC>:JavaCorrect<CR>
 
 " autocmd FileType java vmap <buffer> <silent> <c-f> :JavaFormat<CR>
 
-" autocmd FileType java imap <buffer> <silent> <c-o> <ESC>:JavaImportOrganize<CR>
+autocmd FileType java imap <buffer> <silent> <c-o> <ESC>:JavaImportOrganize<CR>
 
 " autocmd FileType java imap <buffer> <silent> <c-/>d <ESC>:JavaDelegate<CR>
 " autocmd FileType java nmap <buffer> <silent> <c-/>d :JavaDelegate<CR>
@@ -451,6 +465,9 @@ let g:EclimLoclistSignText          = "⚠"
 " autocmd FileType java imap <buffer> <silent> <c-?>c <ESC>:JavaCallHierarchy!<CR>
 " autocmd FileType java nmap <buffer> <silent> <c-?>c :JavaCallHierarchy!<CR>
 
+" This next line recommended by Eclim installation instructions
+
+
 " }}}
 
 " Plugin - Ultisnips {{{
@@ -460,8 +477,9 @@ let g:EclimLoclistSignText          = "⚠"
 let g:UltiSnipsExpandTrigger         = "<c-y>"
 let g:UltiSnipsListSnippets          = "<c-l>"
 
-let g:snips_author_email             = "andy@nodeswork.com"
-let g:snips_author                   = "Yizhen Zhao"
+" Put these configs into ~/.vimrc.local
+" let g:snips_author_email             = "andy@nodeswork.com"
+" let g:snips_author                   = "Yizhen Zhao"
 
 " let g:UltiSnipsJumpForwardTrigger  = "<c-b>"
 " let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
@@ -481,9 +499,17 @@ nmap <silent> <leader>s :call ToggleMode()<CR>
 
 " }}}
 
-""" Plugin - YouCompleteMe {{{
+" Plugin - YouCompleteMe {{{
 
 let g:ycm_server_use_vim_stdout = 0
 " let g:ycm_server_log_level      = 'debug'
 
-""" }}}
+" }}}
+
+" Tail - source .vimrc.local {{{
+
+if filereadable(glob("~/.vimrc.local"))
+  source ~/.vimrc.local
+endif
+
+" }}}
