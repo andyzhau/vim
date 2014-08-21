@@ -1,0 +1,128 @@
+#!/usr/local/bin/python3
+#
+# Author: Yizhen Zhao(andyzh1314@gmail.com)
+
+import argparse
+import os
+import re
+import sys
+import subprocess
+
+
+parser = argparse.ArgumentParser(description='Search file contents')
+
+parser.add_argument('-v', dest='verbose', action='store_true',
+                    help='Show verbose information')
+
+parser.add_argument('--filename', action='store_true',
+                    help="show file names only")
+
+parser.add_argument('-e', '--ext', dest="extension", default="",
+                    help="search in specific extension files")
+
+parser.add_argument('-p', '--partial', default=False, action="store_true")
+
+parser.add_argument('terms', metavar='terms', nargs='+',
+                    help="search terms")
+
+args = None
+
+
+def Println(*output):
+  if args.verbose:
+    print(' '.join(str(o) for o in output))
+
+
+def ExtractParameters():
+  parameters = {
+    "query": "",
+    "search_dir": ".",
+    "extension": args.extension,
+    "exclude": [],
+    "exclude_dir": [],
+  }
+
+  def Consume(term):
+
+    regex = r"^(ext:|\.)([\w]+)"
+    ext_group = re.search(regex, term)
+    if not parameters["extension"] and ext_group is not None:
+      if ext_group is not None:
+        parameters["extension"] = ext_group.groups()[1]
+      return True
+
+    d = os.path.expanduser('~/workspace/%s' % term)
+    if parameters["search_dir"] == "." and os.path.exists(d):
+      parameters["search_dir"] = term
+      return True
+
+    d = os.path.expanduser('~/workspace/%s_trunk' % term)
+    if parameters["search_dir"] == "." and os.path.exists(d):
+      parameters["search_dir"] = term + "_trunk"
+      return True
+
+    if term.startswith('-.'):
+      parameters["exclude"].append('*' + term[1:])
+      return True
+
+    if term.startswith('-'):
+      parameters["exclude_dir"].append(term[1:])
+      return True
+
+    return False
+
+  terms = args.terms
+
+  nterms = []
+  for term in terms:
+    if not Consume(term):
+      nterms.append(term)
+  parameters["query"] = " ".join(nterms)
+
+  Println('-' * 35, "Rules".center(10), '-' * 35)
+  for key in parameters:
+    Println((key + ":").ljust(20), parameters[key])
+
+  return parameters
+
+def Execute(parameters):
+  Println('-' * 35, "Command".center(10), '-' * 35)
+
+  cmds = [
+    'grep', '-r', '-I', '-n', '--color',
+    '--exclude-dir=.svn',
+    '--exclude-dir=.[^/]*',
+    '--exclude-dir=build',
+    '--exclude-dir=i18n',
+    '--exclude=*.bin',
+    '--exclude=*.class',
+    '--exclude=.[^/]*',
+    '--exclude=ctags',
+    '--exclude=tags',
+  ]
+  cmds.extend('--exclude=' + exc for exc in parameters["exclude"])
+  cmds.extend('--exclude-dir=' + exc for exc in parameters["exclude_dir"])
+
+  if args.filename:
+    cmds.append('-l')
+
+  if parameters["extension"]:
+    cmds.append('--include=*.%s' % parameters["extension"])
+
+  if not args.partial:
+    cmds.append('-w')
+
+  cmds.extend([parameters["query"], parameters["search_dir"]])
+
+  Println(*cmds)
+
+  Println('-' * 35, "Results".center(10), '-' * 35)
+  exit(subprocess.call(cmds, cwd=os.path.expanduser("~/workspace")))
+
+
+if __name__ == "__main__":
+  args, unknown = parser.parse_known_args()
+  args.terms.extend(unknown)
+
+  parameters = ExtractParameters()
+  Execute(parameters)
