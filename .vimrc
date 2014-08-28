@@ -55,6 +55,7 @@ Plugin 'othree/html5.vim'
 Plugin 'syngan/vim-vimlint'
 Plugin 'tfnico/vim-gradle'
 Plugin 'ynkdir/vim-vimlparser'
+Plugin 'motus/pig.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -267,6 +268,7 @@ augroup END
 " Language - Javascript, JSON {{{
 
 autocmd BufNewFile,BufRead *.pdsc set filetype=json
+autocmd BufNewFile,BufRead *.avsc set filetype=json
 
 " }}}
 
@@ -281,6 +283,13 @@ autocmd Filetype java setlocal omnifunc=eclim#php#complete#CodeComplete
 nmap <leader>cp :CoffeeCompile<SPACE>vert<CR>
 
 " }}}
+
+" Language - Pig {{{
+
+autocmd Filetype pig setlocal textwidth=0
+
+" }}}
+
 
 " Plugin - NERDTree {{{
 
