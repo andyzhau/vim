@@ -2,8 +2,8 @@ source ~/.bash.git
 source ~/.git-prompt.sh
 source ~/.shell_prompt.sh
 
-if [ -f ~/.bash.linkedin ]; then
-  source ~/.bash.linkedin
+if [ -f ~/.bash.local ]; then
+  source ~/.bash.local
 fi
 
 
