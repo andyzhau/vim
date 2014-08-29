@@ -49,9 +49,10 @@ Plugin 'tpope/vim-surround'
 
 " language bundles
 Plugin 'elzr/vim-json'
-Plugin 'indentpython'
-Plugin 'pangloss/vim-javascript'
+Plugin 'groenewege/vim-less'
+Plugin 'hynek/vim-python-pep8-indent'
 Plugin 'othree/html5.vim'
+Plugin 'pangloss/vim-javascript'
 Plugin 'syngan/vim-vimlint'
 Plugin 'tfnico/vim-gradle'
 Plugin 'ynkdir/vim-vimlparser'
@@ -246,6 +247,7 @@ autocmd FileType vim setlocal nospell
 " Language - Python {{{
 
 autocmd Filetype python setlocal et ts=2 sw=2
+autocmd FileType python setlocal foldmethod=indent
 
 " }}}
 
@@ -260,7 +262,7 @@ autocmd FileType xml setlocal nospell
 
 augroup prewrites
   autocmd!
-  autocmd FileType c,cpp,java,javascript,php,python,groovy,vim autocmd BufWritePre * silent! :%s/\s\+$//e | silent! %s#\($\n\s*\)\+\%$##
+  autocmd FileType c,coffee,cpp,java,javascript,php,python,groovy,vim autocmd BufWritePre * silent! :%s/\s\+$//e | silent! %s#\($\n\s*\)\+\%$##
 augroup END
 
 " }}}
@@ -281,6 +283,7 @@ autocmd Filetype java setlocal omnifunc=eclim#php#complete#CodeComplete
 " Language - Coffeescript {{{
 
 nmap <leader>cp :CoffeeCompile<SPACE>vert<CR>
+autocmd FileType coffee setlocal foldmethod=indent
 
 " }}}
 
@@ -296,7 +299,7 @@ nnoremap <leader>f :NERDTreeFind<cr>
 nnoremap <leader>ff :NERDTreeToggle<cr>
 nnoremap <leader>ft :NERDTree<cr>
 
-let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeIgnore = ['\.pyc$', 'node_modules[[dir]]']
 
 " }}}
 
