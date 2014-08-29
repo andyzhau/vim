@@ -290,7 +290,6 @@ autocmd Filetype pig setlocal textwidth=0
 
 " }}}
 
-
 " Plugin - NERDTree {{{
 
 nnoremap <leader>f :NERDTreeFind<cr>
@@ -369,8 +368,8 @@ highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
 
 nmap <Leader>t= :Tabularize /=<CR>
 vmap <Leader>t= :Tabularize /=<CR>
-nmap <Leader>t: :Tabularize /:\zs<CR>
-vmap <Leader>t: :Tabularize /:\zs<CR>
+nmap <Leader>t: :Tabularize /: \zs<CR>
+vmap <Leader>t: :Tabularize /: \zs<CR>
 
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
 
