@@ -309,7 +309,7 @@ nnoremap <leader>f :NERDTreeFind<cr>
 nnoremap <leader>ff :NERDTreeToggle<cr>
 nnoremap <leader>ft :NERDTree<cr>
 
-let NERDTreeIgnore = ['\.pyc$', 'node_modules[[dir]]']
+let NERDTreeIgnore = ['\.pyc$', 'node_modules[[dir]]', '.git[[dir]]']
 
 " }}}
 
