@@ -30,6 +30,7 @@ Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'andyzhau/eclim-vim'
 Plugin 'bling/vim-airline'
+Plugin 'chrisbra/csv.vim'
 Plugin 'edkolev/promptline.vim'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'fugitive.vim'
@@ -45,18 +46,20 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
+Plugin 'tpope/vim-abolish'
 Plugin 'tpope/vim-surround'
 
 " language bundles
 Plugin 'elzr/vim-json'
 Plugin 'groenewege/vim-less'
 Plugin 'hynek/vim-python-pep8-indent'
+Plugin 'motus/pig.vim'
 Plugin 'othree/html5.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'syngan/vim-vimlint'
 Plugin 'tfnico/vim-gradle'
+Plugin 'tpope/vim-markdown'
 Plugin 'ynkdir/vim-vimlparser'
-Plugin 'motus/pig.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -73,7 +76,7 @@ syntax on
 set nocompatible
 
 " spell checking
-set spell spelllang=en_us
+" set spell spelllang=en_us
 
 " filetype
 filetype on
@@ -235,6 +238,12 @@ nnoremap <silent> tw  :tabclose<CR>
 " copy file path
 :let @" = expand("%:p")
 
+" settings
+
+set pastetoggle=<leader>sp
+
+nmap <leader>sn :set number! number?<cr>
+
 " }}}
 
 " Language Vim {{{
@@ -277,6 +286,7 @@ autocmd BufNewFile,BufRead *.avsc set filetype=json
 " Language - Java {{{
 
 autocmd Filetype java setlocal omnifunc=eclim#php#complete#CodeComplete
+autocmd Filetype java setlocal textwidth=120
 
 " }}}
 
@@ -329,6 +339,7 @@ let g:ctrlp_custom_ignore       = {
   \ }
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_use_caching         = 1
+let g:ctrlp_switch_buffer       = 'et'
 
 nnoremap <leader>t :CtrlPTag<cr>
 
@@ -369,8 +380,8 @@ highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
 
 " Plugin - Tabular {{{
 
-nmap <Leader>t= :Tabularize /=<CR>
-vmap <Leader>t= :Tabularize /=<CR>
+nmap <Leader>t= :Tabularize /^[^=]*<CR>
+vmap <Leader>t= :Tabularize /^[^=]*<CR>
 nmap <Leader>t: :Tabularize /: \zs<CR>
 vmap <Leader>t: :Tabularize /: \zs<CR>
 
