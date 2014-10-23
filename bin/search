@@ -22,6 +22,9 @@ parser.add_argument('-e', '--ext', dest="extension", default="",
 
 parser.add_argument('-p', '--partial', default=False, action="store_true")
 
+parser.add_argument('-t', '--test', default=False, action="store_true",
+                    help="enable test dir and files")
+
 parser.add_argument('terms', metavar='terms', nargs='+',
                     help="search terms")
 
@@ -38,6 +41,7 @@ def ExtractParameters():
     "query": "",
     "search_dir": ".",
     "extension": args.extension,
+    "include": [],
     "exclude": [],
     "exclude_dir": [],
   }
@@ -69,6 +73,10 @@ def ExtractParameters():
       parameters["exclude_dir"].append(term[1:])
       return True
 
+    if term.startswith('in:'):
+      parameters["include"].append(term[3:])
+      return True
+
     return False
 
   terms = args.terms
@@ -82,6 +90,9 @@ def ExtractParameters():
   Println('-' * 35, "Rules".center(10), '-' * 35)
   for key in parameters:
     Println((key + ":").ljust(20), parameters[key])
+
+  if not args.test:
+    parameters["exclude_dir"].append("*test*")
 
   return parameters
 
@@ -102,6 +113,7 @@ def Execute(parameters):
   ]
   cmds.extend('--exclude=' + exc for exc in parameters["exclude"])
   cmds.extend('--exclude-dir=' + exc for exc in parameters["exclude_dir"])
+  cmds.extend('--include=' + exc for exc in parameters["include"])
 
   if args.filename:
     cmds.append('-l')
