@@ -28,7 +28,7 @@ Plugin 'Shougo/vimproc.vim'
 Plugin 'Shougo/vimshell.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'andyzhau/eclim-vim'
+" Plugin 'andyzhau/eclim-vim'
 Plugin 'bling/vim-airline'
 Plugin 'chrisbra/csv.vim'
 Plugin 'edkolev/promptline.vim'
@@ -198,6 +198,10 @@ nmap <C-t> :split<CR><C-w>j:e<SPACE>
 imap <leader>d <ESC>:Ex<CR>
 nmap <leader>d :Ex<CR>
 
+" open current directory
+imap <leader>e <ESC>:e<CR>
+nmap <leader>e :e<CR>
+
 " search
 nmap <leader>/ :noh<CR>
 
@@ -285,7 +289,7 @@ autocmd BufNewFile,BufRead *.avsc set filetype=json
 
 " Language - Java {{{
 
-autocmd Filetype java setlocal omnifunc=eclim#php#complete#CodeComplete
+" autocmd Filetype java setlocal omnifunc=eclim#php#complete#CodeComplete
 autocmd Filetype java setlocal textwidth=120
 
 " }}}
@@ -428,9 +432,9 @@ let g:syntastic_style_error_symbol        = "✗"
 let g:syntastic_style_warning_symbol      = "⚠"
 let g:syntastic_check_on_open             = 0
 let g:syntastic_echo_current_error        = 1
-let g:syntastic_java_checkers             = ['checkstyle']
-let g:syntastic_java_checkstyle_classpath = "~/.vim/libs/checkstyle/checkstyle-5.7-all.jar"
-let g:syntastic_java_checkstyle_conf_file = "~/.vim/configs/sun_checks.xml"
+" let g:syntastic_java_checkers             = ['checkstyle']
+" let g:syntastic_java_checkstyle_classpath = "~/.vim/libs/checkstyle/checkstyle-5.7-all.jar"
+" let g:syntastic_java_checkstyle_conf_file = "~/.vim/configs/sun_checks.xml"
 
 " let g:syntastic_python_checkers           = ['pylint']
 let g:syntastic_python_pylint_args        = '--indent-string="  "'
