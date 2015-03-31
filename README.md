@@ -19,7 +19,7 @@ This repo includes the following configuration files:
 * vim 7.4 compiled with option `+python`
 * python
 
-## Install Commands
+## Install Command
 
     ./install
 
