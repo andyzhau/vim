@@ -1,0 +1,78 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
+
+import argparse
+import os
+import shutil
+
+
+parser = argparse.ArgumentParser(
+    description='Install development environment for Linux / Mac OS X.')
+
+CWD = os.getcwd()
+
+BASH_RC_STR = """
+# Auto-Generated BashRC file, please add additional configuration to .bash.local
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# Source local definitions
+if [ -f ~/.bash.local ]; then
+	. ~/.bash.local
+fi
+
+# Source git repo .bash_profile
+if [ -f {GIT_BASH_PROFILE} ]; then
+	. {GIT_BASH_PROFILE}
+fi
+
+# Export the git repo tools/bin directory
+export PATH=$PATH:{GIT_TOOLS_BIN}
+
+"""
+
+
+def LinkConfigFiles(config_file_name):
+
+  src_file_name = os.path.join(CWD, 'src', config_file_name)
+  tar_file_name = os.path.expanduser(os.path.join('~', config_file_name))
+
+  if os.path.exists(tar_file_name):
+
+    if os.path.samefile(src_file_name, tar_file_name):
+
+      return  # Same file, return
+
+    # Ask if it's okay to remove or skip
+
+    os.remove(tar_file_name)
+
+  os.symlink(src_file_name, tar_file_name)
+
+
+def CopyFile(src, dst):
+
+  shutil.copyfile(src, dst)
+
+
+def InstallBashConfiguration():
+
+  with open(os.path.expanduser(os.path.join('~', '.bashrc')), 'w') as fout:
+
+    fout.write(BASH_RC_STR.format(
+        GIT_BASH_PROFILE=os.path.join(CWD, 'src/bash/.bash_profile'),
+        GIT_TOOLS_BIN=os.path.join(CWD, 'tools/bin')))
+
+
+if __name__ == '__main__':
+
+  args = parser.parse_args()
+
+  LinkConfigFiles('.inputrc')
+  LinkConfigFiles('.screenrc')
+
+  InstallBashConfiguration()
