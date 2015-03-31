@@ -5,6 +5,7 @@
 import argparse
 import os
 import shutil
+import subprocess
 
 
 parser = argparse.ArgumentParser(
@@ -34,6 +35,16 @@ fi
 export PATH=$PATH:{GIT_TOOLS_BIN}
 
 """
+
+BASH_PROFILE_STR = """
+# Auto-Generated BashProfile file, please add additional configuration to .bash.local
+
+# Source .bashrc
+if [ -f ~/.bashrc ]; then
+	. ~/.bashrc
+fi
+"""
+
 
 
 def LinkConfigFiles(config_file_name):
@@ -67,6 +78,28 @@ def InstallBashConfiguration():
         GIT_BASH_PROFILE=os.path.join(CWD, 'src/bash/.bash_profile'),
         GIT_TOOLS_BIN=os.path.join(CWD, 'tools/bin')))
 
+  with open(os.path.expanduser(os.path.join('~', '.bash_profile')), 'w') as fout:
+    fout.write(BASH_PROFILE_STR)
+
+
+def InstallVimConfiguration():
+
+  LinkConfigFiles('.vim')
+  LinkConfigFiles('.vimrc')
+
+  vundle_path = os.path.expanduser('~/.vim/bundle/Vundle.vim')
+
+  if not os.path.exists(vundle_path):
+
+    subprocess.call([
+        'git', 'clone', 'https://github.com/gmarik/Vundle.vim.git', vundle_path])
+    subprocess.call([
+        'vim', '+PluginInstall', '+qall'])
+
+    subprocess.call(
+        ['./install.sh', '--clang-completer'],
+        cwd=os.path.expanduser(os.path.join('~/.vim/bundle/YouCompleteMe')))
+
 
 if __name__ == '__main__':
 
@@ -76,6 +109,4 @@ if __name__ == '__main__':
   LinkConfigFiles('.screenrc')
 
   InstallBashConfiguration()
-
-  LinkConfigFiles('.vim')
-  LinkConfigFiles('.vimrc')
+  InstallVimConfiguration()
