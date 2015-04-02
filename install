@@ -51,7 +51,6 @@ def LinkConfigFiles(config_file_name):
 
   src_file_name = os.path.join(CWD, 'src', config_file_name)
   tar_file_name = os.path.expanduser(os.path.join('~', config_file_name))
-  print tar_file_name, tar_file_name
 
   if os.path.lexists(tar_file_name):
 
@@ -66,9 +65,6 @@ def LinkConfigFiles(config_file_name):
       shutil.rmtree(tar_file_name)
     else:
       os.remove(tar_file_name)
-
-  print os.path.exists(tar_file_name)
-  print src_file_name, tar_file_name
 
   os.symlink(src_file_name, tar_file_name)
 
