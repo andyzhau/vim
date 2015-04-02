@@ -28,7 +28,6 @@ Plugin 'Shougo/vimproc.vim'
 Plugin 'Shougo/vimshell.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
-" Plugin 'andyzhau/eclim-vim'
 Plugin 'bling/vim-airline'
 Plugin 'chrisbra/csv.vim'
 Plugin 'edkolev/promptline.vim'
@@ -352,12 +351,12 @@ nnoremap <leader>t :CtrlPTag<cr>
 " Plugin - Airline {{{
 
 let g:airline_theme             = 'luna'
-let g:airline_enable_branch     = 1
-let g:airline_enable_syntastic  = 1
 let g:airline_powerline_fonts   = 1
 let g:Powerline_symbols         = 'fancy'
 let g:airline_theme             = 'solarized'
 
+let g:airline#extensions#branch#enabled      = 1
+let g:airline#extensions#syntastic#enabled   = 1
 let g:airline#extensions#tabline#enabled = 1
 
 " }}}
@@ -528,7 +527,8 @@ nmap <silent> <leader>s :call ToggleMode()<CR>
 " Plugin - YouCompleteMe {{{
 
 let g:ycm_server_use_vim_stdout = 0
-" let g:ycm_server_log_level      = 'debug'
+let g:ycm_server_log_level      = 'debug'
+let g:ycm_server_keep_logfiles = 1
 
 " }}}
 
