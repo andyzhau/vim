@@ -24,12 +24,15 @@ Plugin 'ack.vim'
 
 " features
 Plugin 'Lokaltog/vim-easymotion'
+Plugin 'Shougo/neomru.vim'
+Plugin 'Shougo/unite.vim'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'Shougo/vimshell.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'bling/vim-airline'
 Plugin 'chrisbra/csv.vim'
+Plugin 'cskeeters/javadoc.vim'
 Plugin 'edkolev/promptline.vim'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'fugitive.vim'
@@ -41,12 +44,15 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'mhinz/vim-signify'
 Plugin 'pthrasher/conqueterm-vim'
+Plugin 'rustushki/JavaImp.vim'
+Plugin 'schickling/vim-bufonly'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
 Plugin 'tpope/vim-abolish'
 Plugin 'tpope/vim-surround'
+Plugin 'yuratomo/w3m.vim'
 
 " language bundles
 Plugin 'elzr/vim-json'
@@ -210,9 +216,9 @@ nmap <leader>/ :noh<CR>
 inoremap <expr> <CR> ((pumvisible())?("\<Right>"):("\<CR>"))
 
 " tabs and buffers
-nnoremap <silent> -   :bprevious<CR>
-nnoremap <silent> =   :bnext<CR>
-" nnoremap <silent> bw  :bwipeout<CR>
+nnoremap <silent> <leader>bh   :bprevious<CR>
+nnoremap <silent> <leader>bl   :bnext<CR>
+nnoremap <silent> <leader>bw  :bwipeout<CR>
 " nnoremap <silent> b1  :bfirst<CR>
 " nnoremap <silent> b2  :buffer 2<CR>
 " nnoremap <silent> b3  :buffer 3<CR>
@@ -306,6 +312,12 @@ autocmd Filetype pig setlocal textwidth=0
 
 " }}}
 
+" Language - zip {{{
+
+au BufRead,BufNewFile *.apk,*.war,*.ear,*.sar,*.rar set filetype=tar
+
+" }}}
+
 " Plugin - NERDTree {{{
 
 nnoremap <leader>f :NERDTreeFind<cr>
@@ -326,7 +338,7 @@ let g:NERDMapleader             = ',c'
 
 " Plugin - Tagbar {{{
 
-let g:tagbar_ctags_bin          = '/usr/bin/ctags'
+" let g:tagbar_ctags_bin          = '/usr/bin/ctags'
 
 nnoremap <silent> <leader>x :TagbarToggle<CR>
 
@@ -531,6 +543,45 @@ nmap <silent> <leader>s :call ToggleMode()<CR>
 let g:ycm_server_use_vim_stdout = 0
 let g:ycm_server_log_level      = 'debug'
 let g:ycm_server_keep_logfiles = 1
+
+" }}}
+
+" Plugin - JavaImp {{{
+
+let g:JavaImpPaths =
+    \ $HOME . "/vim/JavaImp/jmplst/jdk.jmplst"
+
+let g:JavaImpPathSep = ':'
+let g:JavaImpDataDir = $HOME . "/vim/JavaImp"
+let g:JavaImpTopImports = [
+    \ 'android\..*',
+    \ 'org\..*',
+    \ 'com\..*',
+    \ 'java\..*',
+    \ 'javax\..*',
+    \ ]
+let g:JavaImpStaticImportsFirst = 1
+let g:JavaImpSortPkgSep = 1
+
+" let g:JavaImpDocViewer = "lynx"
+let g:JavaImpDocViewer = "w3m"
+let g:JavaImpDocPaths =
+    \ $HOME . "/vim/JavaImp/docs/api:" .
+    \ $HOME . "/Library/Android/sdk/docs/reference"
+
+" }}}
+
+" Plugin - javadoc.vim {{{
+
+let g:javadoc_path =
+    \ $HOME . "/vim/JavaImp/docs/api:" .
+    \ $HOME . "/Library/Android/sdk/docs/reference"
+
+" }}}
+
+" Plugin - Unite {{{
+
+nnoremap <leader>t :Unite buffer file_rec<CR>
 
 " }}}
 
