@@ -166,7 +166,7 @@ set cursorline
 color solarized   " darkblue
 
 " highlight extra whitespace
-highlight ExtraWhitespace ctermbg=red guibg=red
+highlight ExtraWhitespace ctermbg=194 guibg=red
 match ExtraWhitespace /\s\+$/
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
