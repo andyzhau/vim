@@ -43,19 +43,45 @@ alias s="search"
 
 function go {
 
-  if [ "$1" = "home" ]; then
+  place=$1
+
+  if [ "$place" = "home" ]; then
     cd "$HOME"
   fi
 
-  if [ -d "$HOME/workspace/$1_trunk" ]; then
-    cd "$HOME/workspace/$1_trunk"
+  if [ "$place" = "eng-portal" ]; then
+    ssh -A eng-portal
   fi
 
-  if [ -d "$HOME/workspace/$1" ]; then
-    cd "$HOME/workspace/$1"
+  if [ -n "${!1}" ]; then
+    ssh -K ${!1}
   fi
 
-  if [ -z "$1" ]; then
-    cd "$HOME/workspace"
+  if [[ "documents downloads" =~ "$place" ]]; then
+    place=${place^}
+  fi
+
+  if [ -d "$HOME/workspace/$place" ]; then
+    cd "$HOME/workspace/$place"
+  fi
+
+  if [ -d "$HOME/$place" ]; then
+    cd "$HOME/$place"
   fi
 }
+
+_go()
+{
+  local cur prev opts base
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+  opts="magic canasta nertz war eng-portal home workspace downloads documents \
+    $(ls -d -1 ~/workspace/*/ | xargs -n1 basename | tr '\n' ' ')"
+
+  COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+  return 0
+}
+
+complete -F _go go

@@ -19,10 +19,12 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " builtin
-Plugin 'ZoomWin'
-Plugin 'ack.vim'
+
+Plugin 'andyzhau/JavaImp.vim'
 
 " features
+" Plugin 'Shougo/neocomplcache.vim'
+Plugin 'Raimondi/delimitMate'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'Shougo/neomru.vim'
 Plugin 'Shougo/unite.vim'
@@ -30,37 +32,58 @@ Plugin 'Shougo/vimproc.vim'
 Plugin 'Shougo/vimshell.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'akhaku/vim-java-unused-imports'
 Plugin 'bling/vim-airline'
-Plugin 'chrisbra/csv.vim'
 Plugin 'cskeeters/javadoc.vim'
 Plugin 'edkolev/promptline.vim'
-Plugin 'flazz/vim-colorschemes'
 Plugin 'fugitive.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'honza/vim-snippets'
 Plugin 'juneedahamed/svnj.vim'
-Plugin 'kchmck/vim-coffee-script'
 Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'mhinz/vim-signify'
+Plugin 'mileszs/ack.vim'
+Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'pthrasher/conqueterm-vim'
-Plugin 'rustushki/JavaImp.vim'
 Plugin 'schickling/vim-bufonly'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
+Plugin 'svermeulen/vim-easyclip'
 Plugin 'tpope/vim-abolish'
+Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
+Plugin 'troydm/zoomwintab.vim'
 Plugin 'yuratomo/w3m.vim'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'sudo.vim'
+Plugin 'terryma/vim-expand-region'
+Plugin 'maksimr/vim-jsbeautify'
+Plugin 'tpope/vim-classpath'
+Plugin 'kshenoy/vim-signature'
+
+" Plugin 'bling/vim-bufferline'  " filename seems better
+" Plugin 'tpope/vim-endwise'  " with problem
+
+" colorthemes
+Plugin 'flazz/vim-colorschemes'
+Plugin 'nanotech/jellybeans.vim'
+Plugin 'tomasr/molokai'
+Plugin 'junegunn/vim-easy-align'
 
 " language bundles
+Plugin 'chrisbra/csv.vim'
 Plugin 'elzr/vim-json'
 Plugin 'groenewege/vim-less'
 Plugin 'hynek/vim-python-pep8-indent'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'moll/vim-node'
 Plugin 'motus/pig.vim'
 Plugin 'othree/html5.vim'
 Plugin 'pangloss/vim-javascript'
+Plugin 'skammer/vim-css-color'
 Plugin 'syngan/vim-vimlint'
 Plugin 'tfnico/vim-gradle'
 Plugin 'tpope/vim-markdown'
@@ -163,7 +186,7 @@ set cursorline
 " UI {{{
 
 " color theme, usually need to match the terminal theme
-color solarized   " darkblue
+color molokai "  solarized   " darkblue
 
 " highlight extra whitespace
 highlight ExtraWhitespace ctermbg=194 guibg=red
@@ -295,7 +318,7 @@ autocmd BufNewFile,BufRead *.avsc set filetype=json
 " Language - Java {{{
 
 " autocmd Filetype java setlocal omnifunc=eclim#php#complete#CodeComplete
-autocmd Filetype java setlocal textwidth=120
+autocmd Filetype java setlocal textwidth=80
 
 " }}}
 
@@ -370,8 +393,10 @@ let g:airline_theme             = 'solarized'
 let g:airline#extensions#branch#enabled          = 1
 let g:airline#extensions#syntastic#enabled       = 1
 let g:airline#extensions#tabline#enabled         = 1
-let g:airline#extensions#tabline#fnamemod        = ':t'
+let g:airline#extensions#tabline#fnamemod        = ':s?/.*/?/../?.'
 let g:airline#extensions#tabline#fnamecollapse   = 0
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
 
 " }}}
 
@@ -420,8 +445,11 @@ endfunction
 " Plugin - EasyMotion {{{
 
 " Gif config
-" map  / <Plug>(easymotion-sn)
-" omap / <Plug>(easymotion-tn)
+nmap s <Plug>(easymotion-s2)
+" nmap t <Plug>(easymotion-t2)
+
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
 
 " These `n` & `N` mappings are options. You do not have to map `n` & `N` to
 " EasyMotion.
@@ -529,12 +557,12 @@ let g:UltiSnipsEditSplit             = "vertical"
 
 " Plugin - Toggle mode {{{
 
-function ToggleMode()
-  execute "SyntasticToggleMode"
-  call sy#toggle()
-endfunction
+" function ToggleMode()
+  " execute "SyntasticToggleMode"
+  " call sy#toggle()
+" endfunction
 
-nmap <silent> <leader>s :call ToggleMode()<CR>
+" nmap <silent> <leader>s :call ToggleMode()<CR>
 
 " }}}
 
@@ -549,16 +577,19 @@ let g:ycm_server_keep_logfiles = 1
 " Plugin - JavaImp {{{
 
 let g:JavaImpPaths =
-    \ $HOME . "/vim/JavaImp/jmplst/jdk.jmplst"
+    \ $HOME . "/vim/JavaImp/jmplst/jdk.jmplst:" .
+    \ "/tmp/all.jmplist"
 
 let g:JavaImpPathSep = ':'
 let g:JavaImpDataDir = $HOME . "/vim/JavaImp"
 let g:JavaImpTopImports = [
+    \ 'com\.google\..*',
     \ 'android\..*',
-    \ 'org\..*',
-    \ 'com\..*',
     \ 'java\..*',
     \ 'javax\..*',
+    \ 'org\..*',
+    \ 'voldemort\..*',
+    \ 'com\..*',
     \ ]
 let g:JavaImpStaticImportsFirst = 1
 let g:JavaImpSortPkgSep = 1
@@ -582,6 +613,37 @@ let g:javadoc_path =
 " Plugin - Unite {{{
 
 nnoremap <leader>t :Unite buffer file_rec<CR>
+
+" }}}
+
+" Plugin - Easyclip {{{
+
+" use gm for 'add mark' instead of m
+nnoremap gm m
+
+let g:EasyClipShareYanks = 1
+let g:EasyClipAutoFormat = 1
+
+" }}}
+
+" Plugin - NeoComplete {{{
+" Use neocomplcache.
+let g:neocomplcache_enable_at_startup = 1
+" Use smartcase.
+let g:neocomplcache_enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+" }}}
+
+" Plugin - MultipleCursors {{{
+
+let g:multi_cursor_use_default_mapping=0
+
+let g:multi_cursor_next_key='<C-j>'
+let g:multi_cursor_prev_key='<C-k>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
 
 " }}}
 
