@@ -576,9 +576,19 @@ let g:ycm_server_keep_logfiles = 1
 
 " Plugin - JavaImp {{{
 
-let g:JavaImpPaths =
-    \ $HOME . "/vim/JavaImp/jmplst/jdk.jmplst:" .
-    \ "/tmp/all.jmplist"
+" Run from commandline:
+" find "$HOME/workspace" | grep build |  grep -e ".classpath$"  | xargs cat | tr ':' '\n' | sort | uniq | tr '\n' ':' > ~/vim/JavaImp/jars"
+
+let cmd = "cat " . $HOME . "/vim/JavaImp/jars"
+let g:JavaImpPaths = system(cmd)
+let g:JavaImpPaths .= ":" . $HOME . "/vim/JavaImp/jmplst/jdk.jmplst"
+
+" let g:JavaImpPaths = system("find . | grep classpath | xargs cat | tr ':' '\n' | grep .jar | sort | uniq | tr '\n' ':'")
+
+" let g:JavaImpPaths =
+    " \ "/home/yizhao/.gradle/caches/modules-2/files-2.1/voldemort/voldemort/1.8.16.0/6a5a40ef8da3849a08bda5c9fa85e40ab637dc41/voldemort-1.8.16.0.jar"
+    " \ $HOME . "/vim/JavaImp/jmplst/jdk.jmplst:" .
+    " \ "/tmp/all.jmplist"
 
 let g:JavaImpPathSep = ':'
 let g:JavaImpDataDir = $HOME . "/vim/JavaImp"
