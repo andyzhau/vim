@@ -17,7 +17,7 @@ source $bash_dir/.shell_prompt.sh
 #                                   Exports                                    #
 ################################################################################
 
-export PATH=$root_dir/bin:$PATH
+export PATH=$root_dir/bin:/usr/local/bin:$PATH
 
 export EDITOR=vim
 
