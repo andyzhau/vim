@@ -23,15 +23,15 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'andyzhau/JavaImp.vim'
 
 " features
-" Plugin 'Shougo/neocomplcache.vim'
-Plugin 'Raimondi/delimitMate'
 Plugin 'Lokaltog/vim-easymotion'
+Plugin 'Raimondi/delimitMate'
 Plugin 'Shougo/neomru.vim'
 Plugin 'Shougo/unite.vim'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'Shougo/vimshell.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'airblade/vim-gitgutter'
 Plugin 'akhaku/vim-java-unused-imports'
 Plugin 'bling/vim-airline'
 Plugin 'cskeeters/javadoc.vim'
@@ -41,7 +41,9 @@ Plugin 'godlygeek/tabular'
 Plugin 'honza/vim-snippets'
 Plugin 'juneedahamed/svnj.vim'
 Plugin 'kien/ctrlp.vim'
+Plugin 'kshenoy/vim-signature'
 Plugin 'majutsushi/tagbar'
+Plugin 'maksimr/vim-jsbeautify'
 Plugin 'mhinz/vim-signify'
 Plugin 'mileszs/ack.vim'
 Plugin 'nathanaelkane/vim-indent-guides'
@@ -51,21 +53,20 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
+Plugin 'sudo.vim'
 Plugin 'svermeulen/vim-easyclip'
+Plugin 'terryma/vim-expand-region'
+Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-abolish'
+Plugin 'tpope/vim-classpath'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'troydm/zoomwintab.vim'
 Plugin 'yuratomo/w3m.vim'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'sudo.vim'
-Plugin 'terryma/vim-expand-region'
-Plugin 'maksimr/vim-jsbeautify'
-Plugin 'tpope/vim-classpath'
-Plugin 'kshenoy/vim-signature'
 
 " Plugin 'bling/vim-bufferline'  " filename seems better
 " Plugin 'tpope/vim-endwise'  " with problem
+" Plugin 'Shougo/neocomplcache.vim'
 
 " colorthemes
 Plugin 'flazz/vim-colorschemes'
@@ -74,7 +75,9 @@ Plugin 'tomasr/molokai'
 Plugin 'junegunn/vim-easy-align'
 
 " language bundles
+Plugin 'chase/vim-ansible-yaml'
 Plugin 'chrisbra/csv.vim'
+Plugin 'coachshea/jade-vim'
 Plugin 'elzr/vim-json'
 Plugin 'groenewege/vim-less'
 Plugin 'hynek/vim-python-pep8-indent'
@@ -83,11 +86,12 @@ Plugin 'moll/vim-node'
 Plugin 'motus/pig.vim'
 Plugin 'othree/html5.vim'
 Plugin 'pangloss/vim-javascript'
-Plugin 'skammer/vim-css-color'
 Plugin 'syngan/vim-vimlint'
 Plugin 'tfnico/vim-gradle'
 Plugin 'tpope/vim-markdown'
 Plugin 'ynkdir/vim-vimlparser'
+
+" Plugin 'Shougo/neocomplcache.vim'  " slow
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -186,7 +190,7 @@ set cursorline
 " UI {{{
 
 " color theme, usually need to match the terminal theme
-color molokai "  solarized   " darkblue
+color Monokai "  solarized   " darkblue
 
 " highlight extra whitespace
 highlight ExtraWhitespace ctermbg=194 guibg=red
@@ -318,7 +322,7 @@ autocmd BufNewFile,BufRead *.avsc set filetype=json
 " Language - Java {{{
 
 " autocmd Filetype java setlocal omnifunc=eclim#php#complete#CodeComplete
-autocmd Filetype java setlocal textwidth=80
+autocmd Filetype java setlocal textwidth=120
 
 " }}}
 
@@ -583,22 +587,16 @@ let cmd = "cat " . $HOME . "/vim/JavaImp/jars"
 let g:JavaImpPaths = system(cmd)
 let g:JavaImpPaths .= ":" . $HOME . "/vim/JavaImp/jmplst/jdk.jmplst"
 
-" let g:JavaImpPaths = system("find . | grep classpath | xargs cat | tr ':' '\n' | grep .jar | sort | uniq | tr '\n' ':'")
-
-" let g:JavaImpPaths =
-    " \ "/home/yizhao/.gradle/caches/modules-2/files-2.1/voldemort/voldemort/1.8.16.0/6a5a40ef8da3849a08bda5c9fa85e40ab637dc41/voldemort-1.8.16.0.jar"
-    " \ $HOME . "/vim/JavaImp/jmplst/jdk.jmplst:" .
-    " \ "/tmp/all.jmplist"
 
 let g:JavaImpPathSep = ':'
 let g:JavaImpDataDir = $HOME . "/vim/JavaImp"
 let g:JavaImpTopImports = [
-    \ 'com\.google\..*',
     \ 'android\..*',
     \ 'java\..*',
     \ 'javax\..*',
     \ 'org\..*',
     \ 'voldemort\..*',
+    \ 'com\.google\..*',
     \ 'com\..*',
     \ ]
 let g:JavaImpStaticImportsFirst = 1
@@ -650,10 +648,22 @@ let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
 let g:multi_cursor_use_default_mapping=0
 
-let g:multi_cursor_next_key='<C-j>'
-let g:multi_cursor_prev_key='<C-k>'
+let g:multi_cursor_next_key='<C-e>'
+let g:multi_cursor_prev_key='<C-.>'
 let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
+
+" }}}
+
+" Plugin - ack {{{
+
+nnoremap <leader>sc :Ack<SPACE><C-R><C-W><SPACE><C-R>=expand('%:.:s?/.*?/?.')<CR><CR>
+
+" }}}
+
+" Plugin - gitgutter {{{
+
+let g:gitgutter_max_signs = 2000
 
 " }}}
 
@@ -663,4 +673,8 @@ if filereadable(glob("~/.vimrc.local"))
   source ~/.vimrc.local
 endif
 
+" }}}
+
+" Below - {{{
+hi Search cterm=NONE ctermfg=grey ctermbg=blue
 " }}}

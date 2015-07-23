@@ -9,8 +9,9 @@ root_dir="$(dirname $bash_dir)"
 ################################################################################
 
 source $bash_dir/.bash.git
-source $bash_dir/.git-prompt.sh
-source $bash_dir/.shell_prompt.sh
+# source $bash_dir/.git-prompt.sh
+# source $bash_dir/.shell_prompt.sh
+source ~/workspace/.bash-git-prompt/gitprompt.sh
 
 
 ################################################################################
@@ -35,6 +36,14 @@ HISTFILESIZE=10000
 
 alias ll='ls -lh'
 alias s="search"
+
+
+################################################################################
+#                                     Brew                                     #
+################################################################################
+export PATH="$HOME/.linuxbrew/bin:$PATH"
+export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
+export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
 
 
 ################################################################################
