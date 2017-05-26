@@ -16,13 +16,21 @@ call vundle#begin()
 " call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-
-" builtin
-
-Plugin 'andyzhau/JavaImp.vim'
+Plugin 'VundleVim/Vundle.vim'
 
 " features
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdtree'
+Plugin 'sjl/gundo.vim'
+Plugin 'bling/vim-airline'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'kien/ctrlp.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'scrooloose/syntastic'
+Plugin 'terryma/vim-multiple-cursors'
+
+
+Plugin 'lukaszkorecki/CoffeeTags'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'Raimondi/delimitMate'
 Plugin 'Shougo/neomru.vim'
@@ -30,17 +38,14 @@ Plugin 'Shougo/unite.vim'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'Shougo/vimshell.vim'
 Plugin 'SirVer/ultisnips'
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'akhaku/vim-java-unused-imports'
-Plugin 'bling/vim-airline'
 Plugin 'cskeeters/javadoc.vim'
 Plugin 'edkolev/promptline.vim'
 Plugin 'fugitive.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'honza/vim-snippets'
 Plugin 'juneedahamed/svnj.vim'
-Plugin 'kien/ctrlp.vim'
 Plugin 'kshenoy/vim-signature'
 Plugin 'majutsushi/tagbar'
 Plugin 'maksimr/vim-jsbeautify'
@@ -49,35 +54,31 @@ Plugin 'mileszs/ack.vim'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'pthrasher/conqueterm-vim'
 Plugin 'schickling/vim-bufonly'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
-Plugin 'sjl/gundo.vim'
 Plugin 'sudo.vim'
 Plugin 'svermeulen/vim-easyclip'
 Plugin 'terryma/vim-expand-region'
-Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-abolish'
 Plugin 'tpope/vim-classpath'
 Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-surround'
 Plugin 'troydm/zoomwintab.vim'
-Plugin 'yuratomo/w3m.vim'
 
+" Plugin 'yuratomo/w3m.vim'
 " Plugin 'bling/vim-bufferline'  " filename seems better
 " Plugin 'tpope/vim-endwise'  " with problem
 " Plugin 'Shougo/neocomplcache.vim'
 
 " colorthemes
-Plugin 'flazz/vim-colorschemes'
-Plugin 'nanotech/jellybeans.vim'
-Plugin 'tomasr/molokai'
-Plugin 'junegunn/vim-easy-align'
+Plugin 'altercation/vim-colors-solarized'
+" Plugin 'flazz/vim-colorschemes'
+" Plugin 'nanotech/jellybeans.vim'
+" Plugin 'tomasr/molokai'
+" Plugin 'junegunn/vim-easy-align'
 
 " language bundles
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'chrisbra/csv.vim'
 Plugin 'coachshea/jade-vim'
+Plugin 'digitaltoad/vim-pug'
 Plugin 'elzr/vim-json'
 Plugin 'groenewege/vim-less'
 Plugin 'hynek/vim-python-pep8-indent'
@@ -190,7 +191,8 @@ set cursorline
 " UI {{{
 
 " color theme, usually need to match the terminal theme
-color Monokai "  solarized   " darkblue
+set background=dark
+color solarized " Monokai "  solarized   " darkblue
 
 " highlight extra whitespace
 highlight ExtraWhitespace ctermbg=194 guibg=red
@@ -351,7 +353,7 @@ nnoremap <leader>f :NERDTreeFind<cr>
 nnoremap <leader>ff :NERDTreeToggle<cr>
 nnoremap <leader>ft :NERDTree<cr>
 
-let NERDTreeIgnore = ['\.pyc$', 'node_modules[[dir]]', '.git[[dir]]']
+let NERDTreeIgnore = ['\.pyc$', 'node_modules[[dir]]', '.git[[dir]]', 'public\/[[dir]]', 'bower_components[[dir]]']
 
 " }}}
 
@@ -365,9 +367,20 @@ let g:NERDMapleader             = ',c'
 
 " Plugin - Tagbar {{{
 
-" let g:tagbar_ctags_bin          = '/usr/bin/ctags'
+let g:tagbar_ctags_bin          = '/usr/local/bin/ctags'
 
 nnoremap <silent> <leader>x :TagbarToggle<CR>
+
+let g:tagbar_type_coffee = {
+    \ 'ctagstype' : 'coffee',
+    \ 'kinds'     : [
+        \ 'c:classes',
+        \ 'm:methods',
+        \ 'f:functions',
+        \ 'v:variables',
+        \ 'f:fields',
+    \ ]
+    \ }
 
 " }}}
 
@@ -375,7 +388,7 @@ nnoremap <silent> <leader>x :TagbarToggle<CR>
 
 let g:ctrlp_max_files           = 0
 let g:ctrlp_custom_ignore       = {
-  \ 'dir':  '\v[\/](.git|.hg|.svn|build|_codegen|tmp)$',
+  \ 'dir':  '\v[\/](.git|.hg|.svn|build|_codegen|tmp|public|node_modules|bower_components)$',
   \ 'file': '\v\.(exe|so|dll|class|jar|war|pyc|pyo|pyd)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
