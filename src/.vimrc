@@ -29,7 +29,6 @@ Plugin 'tpope/vim-surround'
 Plugin 'scrooloose/syntastic'
 Plugin 'terryma/vim-multiple-cursors'
 
-
 Plugin 'lukaszkorecki/CoffeeTags'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'Raimondi/delimitMate'
@@ -62,19 +61,19 @@ Plugin 'tpope/vim-classpath'
 Plugin 'tpope/vim-repeat'
 Plugin 'troydm/zoomwintab.vim'
 
-" Plugin 'yuratomo/w3m.vim'
-" Plugin 'bling/vim-bufferline'  " filename seems better
-" Plugin 'tpope/vim-endwise'  " with problem
-" Plugin 'Shougo/neocomplcache.vim'
+Plugin 'henrik/vim-indexed-search'
 
 " colorthemes
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'vim-airline/vim-airline-themes'
+
 " Plugin 'flazz/vim-colorschemes'
 " Plugin 'nanotech/jellybeans.vim'
 " Plugin 'tomasr/molokai'
 " Plugin 'junegunn/vim-easy-align'
 
 " language bundles
+Plugin 'fatih/vim-go'
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'chrisbra/csv.vim'
 Plugin 'coachshea/jade-vim'
@@ -91,8 +90,9 @@ Plugin 'syngan/vim-vimlint'
 Plugin 'tfnico/vim-gradle'
 Plugin 'tpope/vim-markdown'
 Plugin 'ynkdir/vim-vimlparser'
-
-" Plugin 'Shougo/neocomplcache.vim'  " slow
+Plugin 'solarnz/thrift.vim'
+Plugin 'elubow/cql-vim'
+Plugin 'leafgarland/typescript-vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -143,6 +143,9 @@ set ignorecase
 set incsearch
 set showmatch
 set smartcase
+
+" clipboard
+set clipboard=unnamed
 
 " ruler
 set ruler
@@ -318,6 +321,8 @@ augroup END
 
 autocmd BufNewFile,BufRead *.pdsc set filetype=json
 autocmd BufNewFile,BufRead *.avsc set filetype=json
+autocmd BufRead,BufNewFile,BufEnter /Users/yizhen/Uber/*.js setlocal ts=4 sw=4
+autocmd BufRead,BufNewFile,BufEnter /Users/yizhen/gocode/*.js setlocal ts=4 sw=4
 
 " }}}
 
@@ -347,13 +352,19 @@ au BufRead,BufNewFile *.apk,*.war,*.ear,*.sar,*.rar set filetype=tar
 
 " }}}
 
+" Language - go {{{
+
+let g:go_def_mapping_enabled = 0
+
+" }}}
+
 " Plugin - NERDTree {{{
 
 nnoremap <leader>f :NERDTreeFind<cr>
 nnoremap <leader>ff :NERDTreeToggle<cr>
 nnoremap <leader>ft :NERDTree<cr>
 
-let NERDTreeIgnore = ['\.pyc$', 'node_modules[[dir]]', '.git[[dir]]', 'public\/[[dir]]', 'bower_components[[dir]]']
+let NERDTreeIgnore = ['\.pyc$', 'node_modules[[dir]]', '^.git[[dir]]', 'public\/[[dir]]', 'bower_components[[dir]]']
 
 " }}}
 
@@ -677,6 +688,14 @@ nnoremap <leader>sc :Ack<SPACE><C-R><C-W><SPACE><C-R>=expand('%:.:s?/.*?/?.')<CR
 " Plugin - gitgutter {{{
 
 let g:gitgutter_max_signs = 2000
+
+" }}}
+
+" Plugin - fugitive {{{
+
+nmap <leader>gs :Gstatus<CR>
+nmap <leader>gb :Gblame<CR>
+nmap <leader>gd :Gdiff<CR>
 
 " }}}
 
