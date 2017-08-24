@@ -16,11 +16,7 @@ call vundle#begin()
 " call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-
-" builtin
-
-Plugin 'andyzhau/JavaImp.vim'
+Plugin 'VundleVim/Vundle.vim'
 
 " features
 Plugin 'Lokaltog/vim-easymotion'
@@ -38,10 +34,12 @@ Plugin 'cskeeters/javadoc.vim'
 Plugin 'edkolev/promptline.vim'
 Plugin 'fugitive.vim'
 Plugin 'godlygeek/tabular'
+Plugin 'henrik/vim-indexed-search'
 Plugin 'honza/vim-snippets'
 Plugin 'juneedahamed/svnj.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'kshenoy/vim-signature'
+Plugin 'lukaszkorecki/CoffeeTags'
 Plugin 'majutsushi/tagbar'
 Plugin 'maksimr/vim-jsbeautify'
 Plugin 'mhinz/vim-signify'
@@ -51,7 +49,7 @@ Plugin 'pthrasher/conqueterm-vim'
 Plugin 'schickling/vim-bufonly'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
-" Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
 Plugin 'sudo.vim'
 Plugin 'svermeulen/vim-easyclip'
@@ -63,38 +61,37 @@ Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'troydm/zoomwintab.vim'
 
-" Plugin 'bling/vim-bufferline'  " filename seems better
-" Plugin 'tpope/vim-endwise'  " with problem
-" Plugin 'Shougo/neocomplcache.vim'
-
 " colorthemes
+Plugin 'altercation/vim-colors-solarized'
 Plugin 'flazz/vim-colorschemes'
+Plugin 'junegunn/vim-easy-align'
 Plugin 'nanotech/jellybeans.vim'
 Plugin 'tomasr/molokai'
-Plugin 'junegunn/vim-easy-align'
 Plugin 'vim-airline/vim-airline-themes'
 
 " language bundles
+Plugin 'Quramy/tsuquyomi'
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'chrisbra/csv.vim'
 Plugin 'coachshea/jade-vim'
+Plugin 'digitaltoad/vim-pug'
+Plugin 'digitaltoad/vim-pug'
+Plugin 'elubow/cql-vim'
 Plugin 'elzr/vim-json'
+Plugin 'fatih/vim-go'
 Plugin 'groenewege/vim-less'
 Plugin 'hynek/vim-python-pep8-indent'
 Plugin 'kchmck/vim-coffee-script'
+Plugin 'leafgarland/typescript-vim'
 Plugin 'moll/vim-node'
 Plugin 'motus/pig.vim'
 Plugin 'othree/html5.vim'
 Plugin 'pangloss/vim-javascript'
+Plugin 'solarnz/thrift.vim'
 Plugin 'syngan/vim-vimlint'
 Plugin 'tfnico/vim-gradle'
 Plugin 'tpope/vim-markdown'
 Plugin 'ynkdir/vim-vimlparser'
-Plugin 'digitaltoad/vim-pug'
-Plugin 'leafgarland/typescript-vim'
-Plugin 'Quramy/tsuquyomi'
-
-" Plugin 'Shougo/neocomplcache.vim'  " slow
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -149,6 +146,9 @@ set incsearch
 set showmatch
 set smartcase
 
+" clipboard
+set clipboard=unnamed
+
 " ruler
 set ruler
 
@@ -196,7 +196,8 @@ set cursorline
 " UI {{{
 
 " color theme, usually need to match the terminal theme
-color solarized " darkblue
+set background=dark
+color solarized " Monokai "  solarized   " darkblue
 
 " highlight extra whitespace
 highlight ExtraWhitespace ctermbg=194 guibg=red
@@ -336,6 +337,8 @@ augroup END
 
 autocmd BufNewFile,BufRead *.pdsc set filetype=json
 autocmd BufNewFile,BufRead *.avsc set filetype=json
+autocmd BufRead,BufNewFile,BufEnter /Users/yizhen/Uber/*.js setlocal ts=4 sw=4
+autocmd BufRead,BufNewFile,BufEnter /Users/yizhen/gocode/*.js setlocal ts=4 sw=4
 
 " }}}
 
@@ -375,6 +378,11 @@ au BufRead,BufNewFile *.apk,*.war,*.ear,*.sar,*.rar set filetype=tar
 
 vmap <leader>c <esc>:'<,'>:CoffeeCompile<CR>
 map <leader>c :CoffeeCompile<CR>
+" }}}
+
+" Language - go {{{
+
+let g:go_def_mapping_enabled = 0
 
 " }}}
 
@@ -384,7 +392,7 @@ nnoremap <leader>f :NERDTreeFind<cr>
 nnoremap <leader>ff :NERDTreeToggle<cr>
 nnoremap <leader>ft :NERDTree<cr>
 
-let NERDTreeIgnore = ['\.pyc$', 'node_modules[[dir]]', 'bower_components[[dir]]', '.git[[dir]]']
+let NERDTreeIgnore = ['\.pyc$', 'node_modules[[dir]]', '^.git[[dir]]', 'public\/[[dir]]', 'bower_components[[dir]]']
 
 " }}}
 
@@ -398,7 +406,7 @@ let g:NERDMapleader             = ',c'
 
 " Plugin - Tagbar {{{
 
-" let g:tagbar_ctags_bin          = '/usr/bin/ctags'
+let g:tagbar_ctags_bin          = '/usr/local/bin/ctags'
 
 nnoremap <silent> <leader>x :TagbarToggle<CR>
 
@@ -720,6 +728,14 @@ nnoremap <leader>sc :Ack<SPACE><C-R><C-W><SPACE><C-R>=expand('%:.:s?/.*?/?.')<CR
 " Plugin - gitgutter {{{
 
 let g:gitgutter_max_signs = 2000
+
+" }}}
+
+" Plugin - fugitive {{{
+
+nmap <leader>gs :Gstatus<CR>
+nmap <leader>gb :Gblame<CR>
+nmap <leader>gd :Gdiff<CR>
 
 " }}}
 
