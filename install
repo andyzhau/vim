@@ -101,7 +101,8 @@ def InstallVimConfiguration():
         'vim', '+PluginInstall', '+qall'])
 
     subprocess.call(
-        ['./install.sh', '--clang-completer'],
+        ['./install.sh', '--clang-completer', '--gocode-completer',
+         '--tern-completer', '--gocode-completer'],
         cwd=os.path.expanduser(os.path.join('~/.vim/bundle/YouCompleteMe')))
 
 
