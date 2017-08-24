@@ -51,7 +51,7 @@ Plugin 'pthrasher/conqueterm-vim'
 Plugin 'schickling/vim-bufonly'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
+" Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
 Plugin 'sudo.vim'
 Plugin 'svermeulen/vim-easyclip'
@@ -62,7 +62,6 @@ Plugin 'tpope/vim-classpath'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'troydm/zoomwintab.vim'
-Plugin 'yuratomo/w3m.vim'
 
 " Plugin 'bling/vim-bufferline'  " filename seems better
 " Plugin 'tpope/vim-endwise'  " with problem
@@ -73,6 +72,7 @@ Plugin 'flazz/vim-colorschemes'
 Plugin 'nanotech/jellybeans.vim'
 Plugin 'tomasr/molokai'
 Plugin 'junegunn/vim-easy-align'
+Plugin 'vim-airline/vim-airline-themes'
 
 " language bundles
 Plugin 'chase/vim-ansible-yaml'
@@ -90,6 +90,9 @@ Plugin 'syngan/vim-vimlint'
 Plugin 'tfnico/vim-gradle'
 Plugin 'tpope/vim-markdown'
 Plugin 'ynkdir/vim-vimlparser'
+Plugin 'digitaltoad/vim-pug'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'Quramy/tsuquyomi'
 
 " Plugin 'Shougo/neocomplcache.vim'  " slow
 
@@ -128,6 +131,9 @@ set complete-=t
 " line limit
 set colorcolumn=+1
 set textwidth=80
+
+" Clipboard
+set clipboard=unnamed
 
 " indent
 set autoindent
@@ -190,7 +196,7 @@ set cursorline
 " UI {{{
 
 " color theme, usually need to match the terminal theme
-color Monokai "  solarized   " darkblue
+color solarized " darkblue
 
 " highlight extra whitespace
 highlight ExtraWhitespace ctermbg=194 guibg=red
@@ -282,6 +288,20 @@ nmap <leader>sn :set number! number?<cr>
 
 " }}}
 
+" Language TypeScript {{{
+
+autocmd BufNewFile,BufRead *.ts set filetype=typescript
+
+let g:typescript_compiler_binary = 'tsc'
+let g:typescript_compiler_options = '--lib es2017'
+
+" let g:syntastic_typescript_checkers = ['tslint', 'tsc']
+let g:syntastic_typescript_checkers = ['tsuquyomi']
+let g:syntastic_typescript_checkers = []
+let g:syntastic_typescript_tsuquyomi_args = '--lib es2017'
+
+" }}}
+
 " Language Vim {{{
 
 autocmd FileType vim setlocal foldmethod=marker
@@ -326,6 +346,12 @@ autocmd Filetype java setlocal textwidth=120
 
 " }}}
 
+" Language - Pug {{{
+
+autocmd Filetype pug setlocal textwidth=120
+
+" }}}
+
 " Language - Coffeescript {{{
 
 nmap <leader>cp :CoffeeCompile<SPACE>vert<CR>
@@ -345,13 +371,20 @@ au BufRead,BufNewFile *.apk,*.war,*.ear,*.sar,*.rar set filetype=tar
 
 " }}}
 
+" Language - CoffeeScript {{{
+
+vmap <leader>c <esc>:'<,'>:CoffeeCompile<CR>
+map <leader>c :CoffeeCompile<CR>
+
+" }}}
+
 " Plugin - NERDTree {{{
 
 nnoremap <leader>f :NERDTreeFind<cr>
 nnoremap <leader>ff :NERDTreeToggle<cr>
 nnoremap <leader>ft :NERDTree<cr>
 
-let NERDTreeIgnore = ['\.pyc$', 'node_modules[[dir]]', '.git[[dir]]']
+let NERDTreeIgnore = ['\.pyc$', 'node_modules[[dir]]', 'bower_components[[dir]]', '.git[[dir]]']
 
 " }}}
 
@@ -369,13 +402,24 @@ let g:NERDMapleader             = ',c'
 
 nnoremap <silent> <leader>x :TagbarToggle<CR>
 
+let g:tagbar_type_coffee = {
+    \ 'ctagstype' : 'coffee',
+    \ 'kinds'     : [
+        \ 'c:classes',
+        \ 'm:methods',
+        \ 'f:functions',
+        \ 'v:variables',
+        \ 'f:fields',
+    \ ]
+\ }
+
 " }}}
 
 " Plugin - Ctrlp {{{
 
 let g:ctrlp_max_files           = 0
 let g:ctrlp_custom_ignore       = {
-  \ 'dir':  '\v[\/](.git|.hg|.svn|build|_codegen|tmp)$',
+  \ 'dir': '\v[\/](.git|.hg|.svn|build|_codegen|tmp|node_modules|bower_components|public|doc|dist)$',
   \ 'file': '\v\.(exe|so|dll|class|jar|war|pyc|pyo|pyd)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
@@ -446,6 +490,13 @@ endfunction
 
 " }}}
 
+" Plugin - fugitive {{{
+
+nmap <Leader>gs :Gstatus<CR>
+nmap <Leader>gp :Gpush<CR>
+nmap <silent> <Leader>gaa :Git add --all<CR>
+" }}}
+
 " Plugin - EasyMotion {{{
 
 " Gif config
@@ -500,8 +551,6 @@ let g:svnj_window_max_size = 20
 " }}}
 
 " Plugin - Eclim {{{
-
-set completeopt-=preview
 
 let g:EclimCssIndentDisabled        = 1
 let g:EclimFileTypeValidate         = 1
@@ -572,9 +621,16 @@ let g:UltiSnipsEditSplit             = "vertical"
 
 " Plugin - YouCompleteMe {{{
 
-let g:ycm_server_use_vim_stdout = 0
-let g:ycm_server_log_level      = 'debug'
-let g:ycm_server_keep_logfiles = 1
+let g:ycm_server_use_vim_stdout    = 0
+let g:ycm_server_log_level         = 'debug'
+let g:ycm_server_keep_logfiles     = 1
+let g:ycm_enable_diagnostic_signs  = 1
+
+if !exists("g:ycm_semantic_triggers")
+  let g:ycm_semantic_triggers = {}
+endif
+let g:ycm_semantic_triggers['typescript'] = ['.']
+" set completeopt-=preview
 
 " }}}
 

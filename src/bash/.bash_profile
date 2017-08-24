@@ -8,10 +8,10 @@ root_dir="$(dirname $bash_dir)"
 #                             Source related files                             #
 ################################################################################
 
-source $bash_dir/.bash.git
+# source $bash_dir/.bash.git
 # source $bash_dir/.git-prompt.sh
 # source $bash_dir/.shell_prompt.sh
-source ~/workspace/.bash-git-prompt/gitprompt.sh
+# source ~/workspace/.bash-git-prompt/gitprompt.sh
 
 
 ################################################################################
@@ -93,4 +93,4 @@ _go()
   return 0
 }
 
-complete -F _go go
+compdef _go go
