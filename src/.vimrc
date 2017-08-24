@@ -29,6 +29,7 @@ Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'akhaku/vim-java-unused-imports'
+Plugin 'andyzhau/html-highlight'
 Plugin 'bling/vim-airline'
 Plugin 'cskeeters/javadoc.vim'
 Plugin 'edkolev/promptline.vim'
@@ -74,7 +75,6 @@ Plugin 'Quramy/tsuquyomi'
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'chrisbra/csv.vim'
 Plugin 'coachshea/jade-vim'
-Plugin 'digitaltoad/vim-pug'
 Plugin 'digitaltoad/vim-pug'
 Plugin 'elubow/cql-vim'
 Plugin 'elzr/vim-json'
@@ -206,6 +206,9 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
+
+" Preview location
+set splitbelow
 
 " }}}
 
@@ -339,6 +342,10 @@ autocmd BufNewFile,BufRead *.pdsc set filetype=json
 autocmd BufNewFile,BufRead *.avsc set filetype=json
 autocmd BufRead,BufNewFile,BufEnter /Users/yizhen/Uber/*.js setlocal ts=4 sw=4
 autocmd BufRead,BufNewFile,BufEnter /Users/yizhen/gocode/*.js setlocal ts=4 sw=4
+autocmd BufRead,BufNewFile,BufEnter /Users/yizhen/Uber/*.json setlocal ts=4 sw=4
+autocmd BufRead,BufNewFile,BufEnter /Users/yizhen/gocode/*.json setlocal ts=4 sw=4
+autocmd BufRead,BufNewFile,BufEnter /Users/yizhen/Uber/*.thrift setlocal ts=4 sw=4
+autocmd BufRead,BufNewFile,BufEnter /Users/yizhen/gocode/*.thrift setlocal ts=4 sw=4
 
 " }}}
 
@@ -558,46 +565,6 @@ let g:svnj_window_max_size = 20
 
 " }}}
 
-" Plugin - Eclim {{{
-
-let g:EclimCssIndentDisabled        = 1
-let g:EclimFileTypeValidate         = 1
-let g:EclimHtmlIndentDisabled       = 1
-let g:EclimJavascriptIndentDisabled = 1
-let g:EclimJavascriptLintEnabled    = 0
-let g:EclimLoclistSignText          = "⚠"
-let g:EclimCompletionMethod         = 'omnifunc'
-let g:EclimTempFilesEnable          = 0
-
-" autocmd FileType java imap <buffer> <silent> <c-u> <c-x><c-u>
-
-autocmd FileType java imap <buffer> <silent> <leader>ji <ESC>:JavaImport<CR>
-
-autocmd FileType java imap <buffer> <silent> <leader>jd <ESC>:JavaDocComment<CR>
-
-autocmd FileType java imap <buffer> <silent> <leader>jc <ESC>:JavaCorrect<CR>
-
-" autocmd FileType java vmap <buffer> <silent> <c-f> :JavaFormat<CR>
-
-autocmd FileType java imap <buffer> <silent> <c-o> <ESC>:JavaImportOrganize<CR>
-
-" autocmd FileType java imap <buffer> <silent> <c-/>d <ESC>:JavaDelegate<CR>
-" autocmd FileType java nmap <buffer> <silent> <c-/>d :JavaDelegate<CR>
-
-" autocmd FileType java imap <buffer> <silent> <c-/>c <ESC>:JavaConstructor<CR>
-" autocmd FileType java nmap <buffer> <silent> <c-/>c :JavaConstructor<CR>
-
-" autocmd FileType java imap <buffer> <silent> <c-?> <ESC>:JavaCorrect<CR>
-" autocmd FileType java nmap <buffer> <silent> <c-?> :JavaCorrect<CR>
-
-" autocmd FileType java imap <buffer> <silent> <c-?>c <ESC>:JavaCallHierarchy!<CR>
-" autocmd FileType java nmap <buffer> <silent> <c-?>c :JavaCallHierarchy!<CR>
-
-" This next line recommended by Eclim installation instructions
-
-
-" }}}
-
 " Plugin - Ultisnips {{{
 
 " Trigger configuration. Do not use <tab> if you use
@@ -639,6 +606,8 @@ if !exists("g:ycm_semantic_triggers")
 endif
 let g:ycm_semantic_triggers['typescript'] = ['.']
 " set completeopt-=preview
+
+let g:ycm_filetype_specific_completion_to_disable = { 'javascript': 1 }
 
 " }}}
 
@@ -736,6 +705,7 @@ let g:gitgutter_max_signs = 2000
 nmap <leader>gs :Gstatus<CR>
 nmap <leader>gb :Gblame<CR>
 nmap <leader>gd :Gdiff<CR>
+nmap <leader>gaa :Git add --all<CR>
 
 " }}}
 
