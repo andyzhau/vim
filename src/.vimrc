@@ -29,6 +29,7 @@ Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'akhaku/vim-java-unused-imports'
+Plugin 'alvan/vim-closetag'
 Plugin 'andyzhau/html-highlight'
 Plugin 'bling/vim-airline'
 Plugin 'cskeeters/javadoc.vim'
@@ -57,10 +58,12 @@ Plugin 'svermeulen/vim-easyclip'
 Plugin 'terryma/vim-expand-region'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-abolish'
-Plugin 'tpope/vim-classpath'
+" Plugin 'tpope/vim-classpath'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'troydm/zoomwintab.vim'
+Plugin 'valloric/matchtagalways'
+Plugin 'ruanyl/vim-sort-imports'
 
 " colorthemes
 Plugin 'altercation/vim-colors-solarized'
@@ -72,6 +75,7 @@ Plugin 'vim-airline/vim-airline-themes'
 
 " language bundles
 Plugin 'Quramy/tsuquyomi'
+Plugin 'burnettk/vim-angular'
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'chrisbra/csv.vim'
 Plugin 'coachshea/jade-vim'
@@ -83,6 +87,7 @@ Plugin 'groenewege/vim-less'
 Plugin 'hynek/vim-python-pep8-indent'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'leafgarland/typescript-vim'
+Plugin 'mattn/emmet-vim'
 Plugin 'moll/vim-node'
 Plugin 'motus/pig.vim'
 Plugin 'othree/html5.vim'
@@ -208,7 +213,7 @@ autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
 " Preview location
-set splitbelow
+" set splitbelow
 
 " }}}
 
@@ -290,6 +295,10 @@ set pastetoggle=<leader>sp
 
 nmap <leader>sn :set number! number?<cr>
 
+" line ending
+imap <leader>; <ESC><s-A>;
+nmap <leader>; <s-A>;<ESC>
+
 " }}}
 
 " Language TypeScript {{{
@@ -299,10 +308,11 @@ autocmd BufNewFile,BufRead *.ts set filetype=typescript
 let g:typescript_compiler_binary = 'tsc'
 let g:typescript_compiler_options = '--lib es2017'
 
-" let g:syntastic_typescript_checkers = ['tslint', 'tsc']
-let g:syntastic_typescript_checkers = ['tsuquyomi']
-let g:syntastic_typescript_checkers = []
-let g:syntastic_typescript_tsuquyomi_args = '--lib es2017'
+" let g:syntastic_typescript_tsuquyomi_args = '--lib es2017'
+let g:tsuquyomi_disable_quickfix = 1
+let g:tsuquyomi_disable_default_mappings = 1
+
+autocmd FileType typescript nmap <c-]> :TsuDefinition<CR>
 
 " }}}
 
@@ -324,6 +334,8 @@ autocmd FileType python setlocal foldmethod=indent
 
 autocmd FileType html,xml setlocal foldmethod=indent
 autocmd FileType xml setlocal nospell
+
+autocmd Filetype html setlocal textwidth=160
 
 " }}}
 
@@ -391,6 +403,8 @@ map <leader>c :CoffeeCompile<CR>
 
 let g:go_def_mapping_enabled = 0
 
+" autocmd FileType go nnoremap <c-i> :GoImport <c-r><c-w><CR>
+
 " }}}
 
 " Plugin - NERDTree {{{
@@ -426,6 +440,39 @@ let g:tagbar_type_coffee = {
         \ 'v:variables',
         \ 'f:fields',
     \ ]
+\ }
+
+" let g:tagbar_type_typescript = {
+  " \ 'ctagsbin' : 'tstags',
+  " \ 'ctagsargs' : '-f-',
+  " \ 'kinds': [
+    " \ 'e:enums:0:1',
+    " \ 'f:function:0:1',
+    " \ 't:typealias:0:1',
+    " \ 'M:Module:0:1',
+    " \ 'I:import:0:1',
+    " \ 'i:interface:0:1',
+    " \ 'C:class:0:1',
+    " \ 'm:method:0:1',
+    " \ 'p:property:0:1',
+    " \ 'v:variable:0:1',
+    " \ 'c:const:0:1',
+  " \ ],
+  " \ 'sort' : 0
+" \ }
+
+let g:tagbar_type_typescript = {
+  \ 'ctagstype': 'typescript',
+  \ 'kinds': [
+    \ 'c:classes',
+    \ 'n:modules',
+    \ 'f:functions',
+    \ 'v:variables',
+    \ 'v:varlambdas',
+    \ 'm:members',
+    \ 'i:interfaces',
+    \ 'e:enums',
+  \ ]
 \ }
 
 " }}}
@@ -489,6 +536,8 @@ nmap <Leader>t= :Tabularize /^[^=]*<CR>
 vmap <Leader>t= :Tabularize /^[^=]*<CR>
 nmap <Leader>t: :Tabularize /: \zs<CR>
 vmap <Leader>t: :Tabularize /: \zs<CR>
+nmap <Leader>tf :Tabularize /from<CR>
+vmap <Leader>tf :Tabularize /from<CR>
 
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
 
@@ -541,18 +590,43 @@ let g:syntastic_error_symbol              = "✗"
 let g:syntastic_warning_symbol            = "⚠"
 let g:syntastic_style_error_symbol        = "✗"
 let g:syntastic_style_warning_symbol      = "⚠"
-let g:syntastic_check_on_open             = 0
+let g:syntastic_check_on_open             = 1
 let g:syntastic_echo_current_error        = 1
-" let g:syntastic_java_checkers             = ['checkstyle']
-" let g:syntastic_java_checkstyle_classpath = "~/.vim/libs/checkstyle/checkstyle-5.7-all.jar"
-" let g:syntastic_java_checkstyle_conf_file = "~/.vim/configs/sun_checks.xml"
+let g:syntastic_check_on_wq               = 0
 
-" let g:syntastic_python_checkers           = ['pylint']
-let g:syntastic_python_pylint_args        = '--indent-string="  "'
+let g:syntastic_java_checkers             = [ ]
+" " let g:syntastic_java_checkstyle_classpath = "~/.vim/libs/checkstyle/checkstyle-5.7-all.jar"
+" " let g:syntastic_java_checkstyle_conf_file = "~/.vim/configs/sun_checks.xml"
 
-let g:syntastic_mode_map                  = { "mode": "passive",
-                                            \ "active_filetypes": [],
-                                            \ "passive_filetypes": [] }
+" " let g:syntastic_python_checkers           = ['pylint']
+" let g:syntastic_python_pylint_args        = '--indent-string="  "'
+
+" let g:syntastic_mode_map                  = { "mode": "passive",
+                                            " \ "active_filetypes": [],
+                                            " \ "passive_filetypes": [] }
+
+let g:syntastic_typescript_checkers = [ 'tsuquyomi', 'tslint'  ]
+let g:syntastic_javascript_checkers = [ ]
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+
+let g:syntastic_html_tidy_ignore_errors = ["is not recognized", "discarding unexpected"]
+let g:syntastic_html_checkers           = []
+let g:syntastic_vim_checkers            = []
+
+" }}}
+
+" Plugin - tsuquyomi {{{
+
+let g:tsuquyomi_shortest_import_path = 1
+let g:tsuquyomi_single_quote_import = 1
+
+nmap <leader>i :TsuImport<CR>
 
 " }}}
 
@@ -569,8 +643,11 @@ let g:svnj_window_max_size = 20
 
 " Trigger configuration. Do not use <tab> if you use
 " https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger         = "<c-y>"
 let g:UltiSnipsListSnippets          = "<c-l>"
+
+let g:UltiSnipsExpandTrigger        = "<tab>"
+let g:UltiSnipsJumpForwardTrigger   = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger  = "<s-tab>"
 
 " Put these configs into ~/.vimrc.local
 " let g:snips_author_email             = "andy@nodeswork.com"
@@ -600,14 +677,21 @@ let g:ycm_server_use_vim_stdout    = 0
 let g:ycm_server_log_level         = 'debug'
 let g:ycm_server_keep_logfiles     = 1
 let g:ycm_enable_diagnostic_signs  = 1
+let g:ycm_show_diagnostics_ui      = 0
 
 if !exists("g:ycm_semantic_triggers")
   let g:ycm_semantic_triggers = {}
 endif
 let g:ycm_semantic_triggers['typescript'] = ['.']
 " set completeopt-=preview
+" set completeopt-=menu
 
 let g:ycm_filetype_specific_completion_to_disable = { 'javascript': 1 }
+
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
 
 " }}}
 
@@ -708,6 +792,10 @@ nmap <leader>gd :Gdiff<CR>
 nmap <leader>gaa :Git add --all<CR>
 
 " }}}
+
+""" Plugin - vim-sort-imports {
+let g:import_sort_auto = 1
+""" }
 
 " Tail - source .vimrc.local {{{
 

@@ -3,8 +3,11 @@ startup_message off
 
 defscrollback 10000
 
-hardstatus alwayslastline
-hardstatus string '%{= kG}[ %` %{g}][%= %{= kw}%?%-Lw%{= rW}%50> %n %f %t %{-}%+Lw%?%? %= %{g}][%{B} %d/%m %{W}%c %{g}]'
+# darkcolor
+caption always '%{= kG}[ %` %{g}][%= %{= kw}%?%-Lw%{= rW}%50> %n %f %t %{-}%+Lw%?%? %= %{g}][%{B} %d/%m %{W}%c %{g}]'
+
+# lightcolor
+# caption always '%{= r}[ %` %{g}][%= %{= r}%?%-Lw%{= rW}%50> %n %f %t %{-}%+Lw%?%? %= %{g}][%{B} %d/%m %{W}%c %{g}]'
 
 shelltitle "$ |bash"
 backtick 0 30 30 sh -c 'screen -ls | grep --color=no -o "$PPID[^[:space:]]*" | awk '"'"'{print $1; split($1,a,".");print a[2]}'"'"''
