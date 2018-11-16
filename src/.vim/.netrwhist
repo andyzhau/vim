@@ -1,4 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
-let g:netrw_dirhist_1='/Users/yizhen/Uber/test/sabre/src/app/boards/board-plugins'
-let g:netrw_dirhist_2='/Users/yizhen/Uber/test/sabre/src/app/boards/board-plugin-set-dialog'
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/Users/yz/workspace/brontosaurus/src/app/manager/menu'
+let g:netrw_dirhist_2='/Users/yz/workspace/brontosaurus/src/app/investments/order-panel'
+let g:netrw_dirhist_3='/Users/yz/workspace/brontosaurus/src/app/manager/carrier-edit'
+let g:netrw_dirhist_4='/Users/yz/workspace/brontosaurus/src/app/pipes'
+let g:netrw_dirhist_5='/Users/yz/workspace/brontosaurus/src/app/animations'

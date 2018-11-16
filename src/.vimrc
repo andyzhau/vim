@@ -20,50 +20,65 @@ Plugin 'VundleVim/Vundle.vim'
 
 " features
 Plugin 'Lokaltog/vim-easymotion'
-Plugin 'Raimondi/delimitMate'
-Plugin 'Shougo/neomru.vim'
-Plugin 'Shougo/unite.vim'
 Plugin 'Shougo/vimproc.vim'
-Plugin 'Shougo/vimshell.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'akhaku/vim-java-unused-imports'
 Plugin 'alvan/vim-closetag'
-Plugin 'andyzhau/html-highlight'
 Plugin 'bling/vim-airline'
-Plugin 'cskeeters/javadoc.vim'
-Plugin 'edkolev/promptline.vim'
 Plugin 'fugitive.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'henrik/vim-indexed-search'
 Plugin 'honza/vim-snippets'
-Plugin 'juneedahamed/svnj.vim'
 Plugin 'kien/ctrlp.vim'
-Plugin 'kshenoy/vim-signature'
-Plugin 'lukaszkorecki/CoffeeTags'
-Plugin 'majutsushi/tagbar'
-Plugin 'maksimr/vim-jsbeautify'
-Plugin 'mhinz/vim-signify'
 Plugin 'mileszs/ack.vim'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'pthrasher/conqueterm-vim'
-Plugin 'schickling/vim-bufonly'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
-Plugin 'sudo.vim'
 Plugin 'svermeulen/vim-easyclip'
 Plugin 'terryma/vim-expand-region'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-abolish'
-" Plugin 'tpope/vim-classpath'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
-Plugin 'troydm/zoomwintab.vim'
+" Plugin 'troydm/zoomwintab.vim'
 Plugin 'valloric/matchtagalways'
+Plugin 'prettier/vim-prettier'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'schickling/vim-bufonly'
+Plugin 'maxbrunsfeld/vim-yankstack'
+
 Plugin 'ruanyl/vim-sort-imports'
+
+Plugin 'Quramy/tsuquyomi'
+
+Plugin 'scrooloose/syntastic'
+Plugin 'w0rp/ale'
+
+Plugin 'junegunn/goyo.vim'
+Plugin 'amix/vim-zenroom2'
+
+" Plugin 'mhinz/vim-signify'
+Plugin 'airblade/vim-gitgutter'
+
+" automatic closing of quotes, parenthesis, brackets, etc.
+" Plugin 'Raimondi/delimitMate'
+
+" Plugin 'Shougo/neomru.vim'
+" Plugin 'Shougo/unite.vim'
+" Plugin 'Shougo/vimshell.vim'
+" Plugin 'akhaku/vim-java-unused-imports'
+" Plugin 'andyzhau/html-highlight'
+" Plugin 'cskeeters/javadoc.vim'
+" Plugin 'edkolev/promptline.vim'
+" Plugin 'juneedahamed/svnj.vim'
+" Plugin 'kshenoy/vim-signature'
+" Plugin 'lukaszkorecki/CoffeeTags'
+" Plugin 'majutsushi/tagbar'
+" Plugin 'maksimr/vim-jsbeautify'
+" Plugin 'nathanaelkane/vim-indent-guides'
+" Plugin 'pthrasher/conqueterm-vim'
+" Plugin 'sudo.vim'
+" Plugin 'tpope/vim-classpath'
 
 " colorthemes
 Plugin 'altercation/vim-colors-solarized'
@@ -74,8 +89,7 @@ Plugin 'tomasr/molokai'
 Plugin 'vim-airline/vim-airline-themes'
 
 " language bundles
-Plugin 'Quramy/tsuquyomi'
-Plugin 'burnettk/vim-angular'
+" Plugin 'burnettk/vim-angular'
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'chrisbra/csv.vim'
 Plugin 'coachshea/jade-vim'
@@ -137,6 +151,15 @@ set textwidth=80
 " Clipboard
 set clipboard=unnamed
 
+" yank to clipboard
+" if has("clipboard")
+  " set clipboard=unnamed " copy to the system clipboard
+
+  " if has("unnamedplus") " X11 support
+    " set clipboard+=unnamedplus
+  " endif
+" endif
+
 " indent
 set autoindent
 set cindent
@@ -150,9 +173,6 @@ set ignorecase
 set incsearch
 set showmatch
 set smartcase
-
-" clipboard
-set clipboard=unnamed
 
 " ruler
 set ruler
@@ -308,11 +328,32 @@ autocmd BufNewFile,BufRead *.ts set filetype=typescript
 let g:typescript_compiler_binary = 'tsc'
 let g:typescript_compiler_options = '--lib es2017'
 
-" let g:syntastic_typescript_tsuquyomi_args = '--lib es2017'
 let g:tsuquyomi_disable_quickfix = 1
 let g:tsuquyomi_disable_default_mappings = 1
+let g:tsuquyomi_completion_detail = 1
 
-autocmd FileType typescript nmap <c-]> :TsuDefinition<CR>
+autocmd FileType typescript setlocal completeopt+=menu,preview
+autocmd FileType typescript nnoremap <buffer> <c-]> :TsuDefinition<CR>
+autocmd FileType typescript nnoremap <buffer> <c-[> :TsuSplitDefinition<CR>
+
+let g:tagbar_type_typescript = {
+  \ 'ctagsbin' : 'tstags',
+  \ 'ctagsargs' : '-f-',
+  \ 'kinds': [
+    \ 'e:enums:0:1',
+    \ 'f:function:0:1',
+    \ 't:typealias:0:1',
+    \ 'M:Module:0:1',
+    \ 'I:import:0:1',
+    \ 'i:interface:0:1',
+    \ 'C:class:0:1',
+    \ 'm:method:0:1',
+    \ 'p:property:0:1',
+    \ 'v:variable:0:1',
+    \ 'c:const:0:1',
+  \ ],
+  \ 'sort' : 0
+\ }
 
 " }}}
 
@@ -343,7 +384,7 @@ autocmd Filetype html setlocal textwidth=160
 
 augroup prewrites
   autocmd!
-  autocmd FileType c,coffee,cpp,java,javascript,php,python,groovy,vim autocmd BufWritePre * silent! :%s/\s\+$//e | silent! %s#\($\n\s*\)\+\%$##
+  autocmd FileType c,coffee,typescript,cpp,java,javascript,php,python,groovy,vim autocmd BufWritePre * silent! :%s/\s\+$//e | silent! %s#\($\n\s*\)\+\%$##
 augroup END
 
 " }}}
@@ -376,8 +417,16 @@ autocmd Filetype pug setlocal textwidth=120
 
 " Language - Coffeescript {{{
 
-nmap <leader>cp :CoffeeCompile<SPACE>vert<CR>
-autocmd FileType coffee setlocal foldmethod=indent
+" nmap <leader>cp :CoffeeCompile<SPACE>vert<CR>
+" autocmd FileType coffee setlocal foldmethod=indent
+
+" }}}
+
+" Language - Typecript {{{
+
+autocmd FileType typescript nmap <leader>ch :e<SPACE><C-R>=expand('%:r')<CR>.html<CR>
+autocmd FileType typescript nmap <leader>cs :e<SPACE><C-R>=expand('%:r')<CR>.scss<CR>
+autocmd FileType typescript nmap <leader>ct :e<SPACE><C-R>=expand('%:r')<CR>.ts<CR>
 
 " }}}
 
@@ -395,8 +444,8 @@ au BufRead,BufNewFile *.apk,*.war,*.ear,*.sar,*.rar set filetype=tar
 
 " Language - CoffeeScript {{{
 
-vmap <leader>c <esc>:'<,'>:CoffeeCompile<CR>
-map <leader>c :CoffeeCompile<CR>
+" vmap <leader>c <esc>:'<,'>:CoffeeCompile<CR>
+" map <leader>c :CoffeeCompile<CR>
 " }}}
 
 " Language - go {{{
@@ -461,19 +510,19 @@ let g:tagbar_type_coffee = {
   " \ 'sort' : 0
 " \ }
 
-let g:tagbar_type_typescript = {
-  \ 'ctagstype': 'typescript',
-  \ 'kinds': [
-    \ 'c:classes',
-    \ 'n:modules',
-    \ 'f:functions',
-    \ 'v:variables',
-    \ 'v:varlambdas',
-    \ 'm:members',
-    \ 'i:interfaces',
-    \ 'e:enums',
-  \ ]
-\ }
+" let g:tagbar_type_typescript = {
+  " \ 'ctagstype': 'typescript',
+  " \ 'kinds': [
+    " \ 'c:classes',
+    " \ 'n:modules',
+    " \ 'f:functions',
+    " \ 'v:variables',
+    " \ 'v:varlambdas',
+    " \ 'm:members',
+    " \ 'i:interfaces',
+    " \ 'e:enums',
+  " \ ]
+" \ }
 
 " }}}
 
@@ -512,13 +561,20 @@ let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
 
 " Plugin - Gundo {{{
 
+let g:gundo_prefer_python3 = 1
 nmap <leader>u :GundoToggle<CR>
+
+" }}}
+
+" Plugin - MatchTagAlways {{{
+
+highlight MatchTag ctermfg=black ctermbg=lightgreen guifg=black guibg=lightgreen
 
 " }}}
 
 " Plugin - Signify {{{
 
-let g:signify_disable_by_default = 1
+" let g:signify_disable_by_default = 1
 
 highlight link SignifySignAdd    DiffAdd
 highlight link SignifySignChange DiffChange
@@ -582,6 +638,16 @@ let g:EasyMotion_use_smartsign_us = 1 " US layout
 
 " }}}
 
+" Plugin - ale {{{
+
+" let g:ale_lint_delay = 100
+let g:ale_lint_on_text_changed = 'normal'
+" let g:ale_linters = {
+" \   'typescript': ['tslint'],
+" \}
+
+" }}}
+
 " Plugin - Syntastic {{{
 
 let g:syntastic_debug                     = 0
@@ -601,11 +667,12 @@ let g:syntastic_java_checkers             = [ ]
 " " let g:syntastic_python_checkers           = ['pylint']
 " let g:syntastic_python_pylint_args        = '--indent-string="  "'
 
-" let g:syntastic_mode_map                  = { "mode": "passive",
-                                            " \ "active_filetypes": [],
-                                            " \ "passive_filetypes": [] }
+let g:syntastic_mode_map                  = { "mode": "active",
+                                            \ "active_filetypes": [],
+                                            \ "passive_filetypes": [ "typescript" ] }
 
-let g:syntastic_typescript_checkers = [ 'tsuquyomi', 'tslint'  ]
+" let g:syntastic_typescript_checkers = [ 'tsuquyomi' ]
+let g:syntastic_typescript_checkers = [ ]
 let g:syntastic_javascript_checkers = [ ]
 
 set statusline+=%#warningmsg#
@@ -621,12 +688,20 @@ let g:syntastic_vim_checkers            = []
 
 " }}}
 
+" Plugin - Goyo {{{
+
+nnoremap <silent> <leader>z :Goyo<cr>
+
+" }}}
+
 " Plugin - tsuquyomi {{{
 
 let g:tsuquyomi_shortest_import_path = 1
 let g:tsuquyomi_single_quote_import = 1
+let g:tsuquyomi_case_sensitive_imports = 1
 
 nmap <leader>i :TsuImport<CR>
+" autocmd FileType typescript nmap <buffer> <Leader>t : <C-u>echo tsuquyomi#hint()<CR>
 
 " }}}
 
@@ -683,7 +758,7 @@ if !exists("g:ycm_semantic_triggers")
   let g:ycm_semantic_triggers = {}
 endif
 let g:ycm_semantic_triggers['typescript'] = ['.']
-" set completeopt-=preview
+set completeopt-=preview
 " set completeopt-=menu
 
 let g:ycm_filetype_specific_completion_to_disable = { 'javascript': 1 }
@@ -780,7 +855,8 @@ nnoremap <leader>sc :Ack<SPACE><C-R><C-W><SPACE><C-R>=expand('%:.:s?/.*?/?.')<CR
 
 " Plugin - gitgutter {{{
 
-let g:gitgutter_max_signs = 2000
+set updatetime=100
+let g:gitgutter_max_signs = 500
 
 " }}}
 
@@ -793,9 +869,24 @@ nmap <leader>gaa :Git add --all<CR>
 
 " }}}
 
-""" Plugin - vim-sort-imports {
-let g:import_sort_auto = 1
-""" }
+" Plugin - prettier {{{
+
+nmap <Leader>py <Plug>(Prettier)
+" let g:prettier#autoformat = 0
+" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
+let g:prettier#config#single_quote = 'true'
+let g:prettier#config#trailing_comma = 'all'
+let g:prettier#config#bracket_spacing = 'true'
+
+" }}}
+
+" Plugin - vim-sort-imports {{{
+"
+let g:import_sort_auto = 0
+
+autocmd FileType typescript nnoremap <buffer> <leader>si :SortImport<CR>
+
+" }}}
 
 " Tail - source .vimrc.local {{{
 
