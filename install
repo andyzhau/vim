@@ -112,6 +112,7 @@ if __name__ == '__main__':
 
   LinkConfigFiles('.inputrc')
   LinkConfigFiles('.screenrc')
+  LinkConfigFiles('.tmux.conf')
 
   InstallBashConfiguration()
   InstallVimConfiguration()
