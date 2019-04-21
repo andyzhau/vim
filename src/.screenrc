@@ -3,6 +3,8 @@ startup_message off
 
 defscrollback 10000
 
+truecolor on
+
 # darkcolor
 caption always '%{= kG}[ %` %{g}][%= %{= kw}%?%-Lw%{= rW}%50> %n %f %t %{-}%+Lw%?%? %= %{g}][%{B} %d/%m %{W}%c %{g}]'
 

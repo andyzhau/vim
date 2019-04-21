@@ -34,18 +34,21 @@ Plugin 'mileszs/ack.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'sjl/gundo.vim'
-Plugin 'svermeulen/vim-easyclip'
 Plugin 'terryma/vim-expand-region'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-abolish'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 " Plugin 'troydm/zoomwintab.vim'
-Plugin 'valloric/matchtagalways'
-Plugin 'prettier/vim-prettier'
+" Plugin 'valloric/matchtagalways'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'schickling/vim-bufonly'
-Plugin 'maxbrunsfeld/vim-yankstack'
+
+Plugin 'Chiel92/vim-autoformat'
+" Plugin 'prettier/vim-prettier'
+
+Plugin 'svermeulen/vim-easyclip'
+" Plugin 'maxbrunsfeld/vim-yankstack'
 
 Plugin 'ruanyl/vim-sort-imports'
 
@@ -55,10 +58,10 @@ Plugin 'scrooloose/syntastic'
 Plugin 'w0rp/ale'
 
 Plugin 'junegunn/goyo.vim'
-Plugin 'amix/vim-zenroom2'
+" Plugin 'amix/vim-zenroom2'
 
 " Plugin 'mhinz/vim-signify'
-Plugin 'airblade/vim-gitgutter'
+" Plugin 'airblade/vim-gitgutter'
 
 " automatic closing of quotes, parenthesis, brackets, etc.
 " Plugin 'Raimondi/delimitMate'
@@ -73,7 +76,7 @@ Plugin 'airblade/vim-gitgutter'
 " Plugin 'juneedahamed/svnj.vim'
 " Plugin 'kshenoy/vim-signature'
 " Plugin 'lukaszkorecki/CoffeeTags'
-" Plugin 'majutsushi/tagbar'
+Plugin 'majutsushi/tagbar'
 " Plugin 'maksimr/vim-jsbeautify'
 " Plugin 'nathanaelkane/vim-indent-guides'
 " Plugin 'pthrasher/conqueterm-vim'
@@ -82,14 +85,16 @@ Plugin 'airblade/vim-gitgutter'
 
 " colorthemes
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'flazz/vim-colorschemes'
+" Plugin 'flazz/vim-colorschemes'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'nanotech/jellybeans.vim'
 Plugin 'tomasr/molokai'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'dracula/vim'
+Plugin 'ayu-theme/ayu-vim'
+" Plugin 'felixhummel/setcolors.vim'
 
 " language bundles
-" Plugin 'burnettk/vim-angular'
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'chrisbra/csv.vim'
 Plugin 'coachshea/jade-vim'
@@ -100,7 +105,6 @@ Plugin 'fatih/vim-go'
 Plugin 'groenewege/vim-less'
 Plugin 'hynek/vim-python-pep8-indent'
 Plugin 'kchmck/vim-coffee-script'
-Plugin 'leafgarland/typescript-vim'
 Plugin 'mattn/emmet-vim'
 Plugin 'moll/vim-node'
 Plugin 'motus/pig.vim'
@@ -111,6 +115,11 @@ Plugin 'syngan/vim-vimlint'
 Plugin 'tfnico/vim-gradle'
 Plugin 'tpope/vim-markdown'
 Plugin 'ynkdir/vim-vimlparser'
+Plugin 'hail2u/vim-css3-syntax'
+
+" Plugin 'leafgarland/typescript-vim'
+" yats.vim is faster than typescript-vim
+Plugin 'HerringtonDarkholme/yats.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -213,6 +222,8 @@ set wildignore+=*/tmp/*,*.so,*.swp
 " highlight the current line use
 set cursorline
 
+set viminfo+=n~/.vim/viminfo
+
 " uncomment to highlight the current column use
 " set cursorcolumn
 
@@ -220,9 +231,20 @@ set cursorline
 
 " UI {{{
 
+set termguicolors
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+" let ayucolor="mirage"
+" color ayu
+
+let g:dracula_italic = 0
+color dracula
+
 " color theme, usually need to match the terminal theme
-set background=dark
-color solarized " Monokai "  solarized   " darkblue
+" set background=dark
+" color solarized
+" color Monokai
+" color darkblue
 
 " highlight extra whitespace
 highlight ExtraWhitespace ctermbg=194 guibg=red
@@ -332,28 +354,10 @@ let g:tsuquyomi_disable_quickfix = 1
 let g:tsuquyomi_disable_default_mappings = 1
 let g:tsuquyomi_completion_detail = 1
 
-autocmd FileType typescript setlocal completeopt+=menu,preview
+" autocmd FileType typescript setlocal completeopt+=menu,preview
 autocmd FileType typescript nnoremap <buffer> <c-]> :TsuDefinition<CR>
 autocmd FileType typescript nnoremap <buffer> <c-[> :TsuSplitDefinition<CR>
-
-let g:tagbar_type_typescript = {
-  \ 'ctagsbin' : 'tstags',
-  \ 'ctagsargs' : '-f-',
-  \ 'kinds': [
-    \ 'e:enums:0:1',
-    \ 'f:function:0:1',
-    \ 't:typealias:0:1',
-    \ 'M:Module:0:1',
-    \ 'I:import:0:1',
-    \ 'i:interface:0:1',
-    \ 'C:class:0:1',
-    \ 'm:method:0:1',
-    \ 'p:property:0:1',
-    \ 'v:variable:0:1',
-    \ 'c:const:0:1',
-  \ ],
-  \ 'sort' : 0
-\ }
+autocmd FileType typescript nnoremap <buffer> <c-f> :TsuQuickFix<CR>
 
 " }}}
 
@@ -376,7 +380,7 @@ autocmd FileType python setlocal foldmethod=indent
 autocmd FileType html,xml setlocal foldmethod=indent
 autocmd FileType xml setlocal nospell
 
-autocmd Filetype html setlocal textwidth=160
+" autocmd Filetype html setlocal textwidth=160
 
 " }}}
 
@@ -491,39 +495,6 @@ let g:tagbar_type_coffee = {
     \ ]
 \ }
 
-" let g:tagbar_type_typescript = {
-  " \ 'ctagsbin' : 'tstags',
-  " \ 'ctagsargs' : '-f-',
-  " \ 'kinds': [
-    " \ 'e:enums:0:1',
-    " \ 'f:function:0:1',
-    " \ 't:typealias:0:1',
-    " \ 'M:Module:0:1',
-    " \ 'I:import:0:1',
-    " \ 'i:interface:0:1',
-    " \ 'C:class:0:1',
-    " \ 'm:method:0:1',
-    " \ 'p:property:0:1',
-    " \ 'v:variable:0:1',
-    " \ 'c:const:0:1',
-  " \ ],
-  " \ 'sort' : 0
-" \ }
-
-" let g:tagbar_type_typescript = {
-  " \ 'ctagstype': 'typescript',
-  " \ 'kinds': [
-    " \ 'c:classes',
-    " \ 'n:modules',
-    " \ 'f:functions',
-    " \ 'v:variables',
-    " \ 'v:varlambdas',
-    " \ 'm:members',
-    " \ 'i:interfaces',
-    " \ 'e:enums',
-  " \ ]
-" \ }
-
 " }}}
 
 " Plugin - Ctrlp {{{
@@ -613,7 +584,7 @@ endfunction
 " Plugin - fugitive {{{
 
 nmap <Leader>gs :Gstatus<CR>
-nmap <Leader>gp :Gpush<CR>
+nmap <Leader>gp :Gpush --follow-tags<CR>
 nmap <silent> <Leader>gaa :Git add --all<CR>
 " }}}
 
@@ -640,8 +611,11 @@ let g:EasyMotion_use_smartsign_us = 1 " US layout
 
 " Plugin - ale {{{
 
-" let g:ale_lint_delay = 100
-let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_delay = 200
+" let g:ale_lint_on_text_changed = 'normal'
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
 " let g:ale_linters = {
 " \   'typescript': ['tslint'],
 " \}
@@ -692,6 +666,12 @@ let g:syntastic_vim_checkers            = []
 
 nnoremap <silent> <leader>z :Goyo<cr>
 
+function! s:goyo_enter()
+endfunction
+
+function! s:goyo_leave()
+endfunction
+
 " }}}
 
 " Plugin - tsuquyomi {{{
@@ -700,7 +680,7 @@ let g:tsuquyomi_shortest_import_path = 1
 let g:tsuquyomi_single_quote_import = 1
 let g:tsuquyomi_case_sensitive_imports = 1
 
-nmap <leader>i :TsuImport<CR>
+autocmd FileType typescript nnoremap <leader>i :TsuImport<CR>
 " autocmd FileType typescript nmap <buffer> <Leader>t : <C-u>echo tsuquyomi#hint()<CR>
 
 " }}}
@@ -824,6 +804,28 @@ nnoremap gm m
 let g:EasyClipShareYanks = 1
 let g:EasyClipAutoFormat = 1
 
+let g:EasyClipUseSubstituteDefaults = 1
+
+let g:EasyClipUsePasteToggleDefaults = 0
+
+" nmap <c-f> <plug>EasyClipSwapPasteForward
+" nmap <c-d> <plug>EasyClipSwapPasteBackwards
+
+" }}}
+
+" Plugin = VimAutoformat {{{
+
+let g:formatdef_html_beautify = '"html-beautify --indent-size=".&shiftwidth." --wrap-attributes=force-aligned --wrap-line-length=81"'
+let g:formatters_html = ['html_beautify']
+
+let g:formatdef_prettier = '"prettier --parser=typescript --single-quote --trailing-comma=all"'
+let g:formatters_typescript = ['prettier']
+
+" let g:autoformat_verbosemode=1
+" let verbose=1
+
+nnoremap <leader>py :Autoformat<CR>
+
 " }}}
 
 " Plugin - NeoComplete {{{
@@ -857,6 +859,7 @@ nnoremap <leader>sc :Ack<SPACE><C-R><C-W><SPACE><C-R>=expand('%:.:s?/.*?/?.')<CR
 
 set updatetime=100
 let g:gitgutter_max_signs = 500
+let g:gitgutter_async = 1
 
 " }}}
 
@@ -871,12 +874,13 @@ nmap <leader>gaa :Git add --all<CR>
 
 " Plugin - prettier {{{
 
-nmap <Leader>py <Plug>(Prettier)
+" nmap <Leader>py <Plug>(Prettier)
 " let g:prettier#autoformat = 0
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
 let g:prettier#config#single_quote = 'true'
 let g:prettier#config#trailing_comma = 'all'
 let g:prettier#config#bracket_spacing = 'true'
+let g:prettier#exec_cmd_async = 1
 
 " }}}
 
@@ -886,6 +890,12 @@ let g:import_sort_auto = 0
 
 autocmd FileType typescript nnoremap <buffer> <leader>si :SortImport<CR>
 
+" }}}
+
+" Plugin - SetColors {{{
+
+" nnoremap <C-Y> :call NextColor(1)<CR>
+" nnoremap <C-B> :call NextColor(-1)<CR>
 " }}}
 
 " Tail - source .vimrc.local {{{
@@ -898,4 +908,22 @@ endif
 
 " Below - {{{
 hi Search cterm=NONE ctermfg=grey ctermbg=blue
+" }}}
+
+
+" Test {{{
+augroup vimrc_autocmd
+  autocmd!
+  "toggle quickfix window
+  autocmd BufReadPost quickfix map <buffer> <leader>qq :cclose<cr>|map <buffer> <c-p> <up>|map <buffer> <c-n> <down>
+
+  autocmd FileType unite call s:unite_settings()
+  " obliterate unite buffers (marks especially).
+  autocmd BufLeave \[unite\]* if "nofile" ==# &buftype | setlocal bufhidden=wipe | endif
+
+  " Jump to the last position when reopening a file
+  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+
+  " ...etc...
+augroup END
 " }}}
