@@ -4,11 +4,14 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/yz/.oh-my-zsh
 
+export NPM_TOKEN=7ae168ed-b71f-4c9d-b780-41a7616ada5a
+
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 
+ZSH_DISABLE_COMPFIX="true"
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
 # cause zsh load theme from this variable instead of
@@ -100,3 +103,25 @@ if [ -f '/usr/local/bin/google-cloud-sdk/path.zsh.inc' ]; then . '/usr/local/bin
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/usr/local/bin/google-cloud-sdk/completion.zsh.inc' ]; then . '/usr/local/bin/google-cloud-sdk/completion.zsh.inc'; fi
+
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin:$HOME/.mix/escripts"
+
+\. ~/.rvm/scripts/rvm
+
+alias v="nvim"
+
+nvm use 12
+export GOOGLE_APPLICATION_CREDENTIALS=/Users/yz/workspace/dogwood-courier-217506-8ed699801161.json
+export NPM_TOKEN=7ae168ed-b71f-4c9d-b780-41a7616ada5a
+export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+
+###-tns-completion-start-###
+if [ -f /Users/yz/.tnsrc ]; then
+    source /Users/yz/.tnsrc
+fi
+###-tns-completion-end-###
+
+
+export PATH="$PATH:/Users/yz/development/flutter/bin"
