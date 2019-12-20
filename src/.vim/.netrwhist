@@ -1,5 +1,4 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
-let g:netrw_dirhist_1='/Users/yz/workspace/sbase/src/koa'
-let g:netrw_dirhist_2='/Users/yz/workspace/yamroot/scripts'
-let g:netrw_dirhist_3='/Users/yz/workspace/yamroot'
+let g:netrw_dirhistcnt =2
+let g:netrw_dirhist_2='/Users/yz/workspace/mono/deps/dwolla/lib/dwolla'
+let g:netrw_dirhist_1='/Users/yz/workspace/brontosaurus/projects/a7/ui-auth/src/lib/reset-password-form'

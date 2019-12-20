@@ -4,125 +4,121 @@
 
 " }}}
 
-" Vundle Plugins {{{
+" vim-plug {{{
+call plug#begin()
+Plug 'tpope/vim-sensible'
 
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-" call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
 " features
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'Shougo/vimproc.vim'
-Plugin 'SirVer/ultisnips'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'alvan/vim-closetag'
-Plugin 'bling/vim-airline'
-Plugin 'fugitive.vim'
-Plugin 'godlygeek/tabular'
-Plugin 'henrik/vim-indexed-search'
-Plugin 'honza/vim-snippets'
-Plugin 'kien/ctrlp.vim'
-Plugin 'mileszs/ack.vim'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
-Plugin 'sjl/gundo.vim'
-Plugin 'terryma/vim-expand-region'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'tpope/vim-abolish'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-surround'
-" Plugin 'troydm/zoomwintab.vim'
-" Plugin 'valloric/matchtagalways'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'schickling/vim-bufonly'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'alvan/vim-closetag'
+Plug 'bling/vim-airline'
+Plug 'tpope/vim-fugitive'
+Plug 'godlygeek/tabular'
+Plug 'henrik/vim-indexed-search'
+Plug 'honza/vim-snippets'
+Plug 'kien/ctrlp.vim'
+Plug 'mileszs/ack.vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree' ", { 'on': 'NERDTreeToggle' }
+Plug 'sjl/gundo.vim'
+Plug 'terryma/vim-expand-region'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'jiangmiao/auto-pairs'
+Plug 'schickling/vim-bufonly'
+Plug 'Chiel92/vim-autoformat'
+Plug 'svermeulen/vim-easyclip'
+Plug 'ruanyl/vim-sort-imports'
+" Plug 'Quramy/tsuquyomi'
+" Plug 'scrooloose/syntastic'
+Plug 'w0rp/ale'
 
-Plugin 'Chiel92/vim-autoformat'
-" Plugin 'prettier/vim-prettier'
+Plug 'junegunn/goyo.vim'
+" Plug 'SirVer/ultisnips'
 
-Plugin 'svermeulen/vim-easyclip'
-" Plugin 'maxbrunsfeld/vim-yankstack'
+" Plug 'Valloric/YouCompleteMe'
+" Plug 'troydm/zoomwintab.vim'
+" Plug 'valloric/matchtagalways'
+" Plug 'prettier/vim-prettier'
+" Plug 'maxbrunsfeld/vim-yankstack'
+" Plug 'amix/vim-zenroom2'
 
-Plugin 'ruanyl/vim-sort-imports'
-
-Plugin 'Quramy/tsuquyomi'
-
-Plugin 'scrooloose/syntastic'
-Plugin 'w0rp/ale'
-
-Plugin 'junegunn/goyo.vim'
-" Plugin 'amix/vim-zenroom2'
-
-" Plugin 'mhinz/vim-signify'
-" Plugin 'airblade/vim-gitgutter'
+" Plug 'mhinz/vim-signify'
+Plug 'airblade/vim-gitgutter'
+Plug 'neoclide/npm.nvim', {'do' : 'npm install'}
 
 " automatic closing of quotes, parenthesis, brackets, etc.
-" Plugin 'Raimondi/delimitMate'
+" Plug 'Raimondi/delimitMate'
 
-" Plugin 'Shougo/neomru.vim'
-" Plugin 'Shougo/unite.vim'
-" Plugin 'Shougo/vimshell.vim'
-" Plugin 'akhaku/vim-java-unused-imports'
-" Plugin 'andyzhau/html-highlight'
-" Plugin 'cskeeters/javadoc.vim'
-" Plugin 'edkolev/promptline.vim'
-" Plugin 'juneedahamed/svnj.vim'
-" Plugin 'kshenoy/vim-signature'
-" Plugin 'lukaszkorecki/CoffeeTags'
-Plugin 'majutsushi/tagbar'
-" Plugin 'maksimr/vim-jsbeautify'
-" Plugin 'nathanaelkane/vim-indent-guides'
-" Plugin 'pthrasher/conqueterm-vim'
-" Plugin 'sudo.vim'
-" Plugin 'tpope/vim-classpath'
+" Plug 'Shougo/neomru.vim'
+" Plug 'Shougo/unite.vim'
+" Plug 'Shougo/vimshell.vim'
+" Plug 'akhaku/vim-java-unused-imports'
+" Plug 'andyzhau/html-highlight'
+" Plug 'cskeeters/javadoc.vim'
+" Plug 'edkolev/promptline.vim'
+" Plug 'juneedahamed/svnj.vim'
+" Plug 'kshenoy/vim-signature'
+" Plug 'lukaszkorecki/CoffeeTags'
+Plug 'majutsushi/tagbar'
+" Plug 'maksimr/vim-jsbeautify'
+" Plug 'nathanaelkane/vim-indent-guides'
+" Plug 'pthrasher/conqueterm-vim'
+" Plug 'sudo.vim'
+" Plug 'tpope/vim-classpath'
 
 " colorthemes
-Plugin 'altercation/vim-colors-solarized'
-" Plugin 'flazz/vim-colorschemes'
-Plugin 'junegunn/vim-easy-align'
-Plugin 'nanotech/jellybeans.vim'
-Plugin 'tomasr/molokai'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'dracula/vim'
-Plugin 'ayu-theme/ayu-vim'
-" Plugin 'felixhummel/setcolors.vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'flazz/vim-colorschemes'
+Plug 'junegunn/vim-easy-align'
+Plug 'nanotech/jellybeans.vim'
+Plug 'tomasr/molokai'
+" Plug 'vim-airline/vim-airline-themes'
+Plug 'liuchengxu/eleline.vim'
+Plug 'dracula/vim'
+Plug 'ayu-theme/ayu-vim'
+" Plug 'felixhummel/setcolors.vim'
 
 " language bundles
-Plugin 'chase/vim-ansible-yaml'
-Plugin 'chrisbra/csv.vim'
-Plugin 'coachshea/jade-vim'
-Plugin 'digitaltoad/vim-pug'
-Plugin 'elubow/cql-vim'
-Plugin 'elzr/vim-json'
-Plugin 'fatih/vim-go'
-Plugin 'groenewege/vim-less'
-Plugin 'hynek/vim-python-pep8-indent'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'mattn/emmet-vim'
-Plugin 'moll/vim-node'
-Plugin 'motus/pig.vim'
-Plugin 'othree/html5.vim'
-Plugin 'pangloss/vim-javascript'
-Plugin 'solarnz/thrift.vim'
-Plugin 'syngan/vim-vimlint'
-Plugin 'tfnico/vim-gradle'
-Plugin 'tpope/vim-markdown'
-Plugin 'ynkdir/vim-vimlparser'
-Plugin 'hail2u/vim-css3-syntax'
+Plug 'dart-lang/dart-vim-plugin'
+Plug 'thosakwe/vim-flutter'
+Plug 'chase/vim-ansible-yaml'
+Plug 'chrisbra/csv.vim'
+Plug 'coachshea/jade-vim'
+Plug 'digitaltoad/vim-pug'
+Plug 'elubow/cql-vim'
+Plug 'elzr/vim-json'
+Plug 'fatih/vim-go'
+Plug 'groenewege/vim-less'
+Plug 'hynek/vim-python-pep8-indent'
+Plug 'kchmck/vim-coffee-script'
+Plug 'mattn/emmet-vim'
+Plug 'moll/vim-node'
+Plug 'motus/pig.vim'
+Plug 'othree/html5.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'solarnz/thrift.vim'
+Plug 'syngan/vim-vimlint'
+Plug 'tfnico/vim-gradle'
+Plug 'tpope/vim-markdown'
+Plug 'ynkdir/vim-vimlparser'
+" Plug 'hail2u/vim-css3-syntax'
+Plug 'elixir-editors/vim-elixir'
 
-" Plugin 'leafgarland/typescript-vim'
+Plug 'leafgarland/typescript-vim'
 " yats.vim is faster than typescript-vim
-Plugin 'HerringtonDarkholme/yats.vim'
+" Plug 'HerringtonDarkholme/yats.vim'
 
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
+" call vundle#end()            " required
+call plug#end()
 filetype plugin indent on    " required
 
 " }}}
@@ -158,15 +154,15 @@ set colorcolumn=+1
 set textwidth=80
 
 " Clipboard
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " yank to clipboard
 " if has("clipboard")
-  " set clipboard=unnamed " copy to the system clipboard
+" set clipboard=unnamed " copy to the system clipboard
 
-  " if has("unnamedplus") " X11 support
-    " set clipboard+=unnamedplus
-  " endif
+" if has("unnamedplus") " X11 support
+" set clipboard+=unnamedplus
+" endif
 " endif
 
 " indent
@@ -213,6 +209,9 @@ set laststatus=2
 " show (partial) command in the last line of the screen.
 set showcmd
 
+" always show signcolumns
+set signcolumn=yes
+
 " ctags
 set tags=tags;~/workspace/tags
 
@@ -222,7 +221,9 @@ set wildignore+=*/tmp/*,*.so,*.swp
 " highlight the current line use
 set cursorline
 
-set viminfo+=n~/.vim/viminfo
+" if !has('nvim')
+" set viminfo+=~/.vim/viminfo
+" endif
 
 " uncomment to highlight the current column use
 " set cursorcolumn
@@ -276,12 +277,17 @@ nmap <silent> <leader>aa :qa!<CR>
 " window switch
 nmap <C-h> <C-w>h
 nmap <C-l> <C-w>l
-nmap <C-j> <C-w>j
-nmap <C-k> <C-w>k
+" nmap <C-j> <C-w>j
+" nmap <C-k> <C-w>k
 
 " split window
-nmap <C-n> :vsplit<CR><C-w>l:e<SPACE>
-nmap <C-t> :split<CR><C-w>j:e<SPACE>
+nmap <C-n> :vsplit<CR><C-w>l
+nmap <C-t> :split<CR><C-w>j
+
+" Quick close other window
+nmap <silent> <leader>kq <C-w>k:q<CR>
+nmap <silent> <leader>lq <C-w>l:q<CR>
+nmap <silent> <leader>hq <C-w>h:q<CR>
 
 " open current directory
 imap <leader>d <ESC>:Ex<CR>
@@ -355,9 +361,9 @@ let g:tsuquyomi_disable_default_mappings = 1
 let g:tsuquyomi_completion_detail = 1
 
 " autocmd FileType typescript setlocal completeopt+=menu,preview
-autocmd FileType typescript nnoremap <buffer> <c-]> :TsuDefinition<CR>
-autocmd FileType typescript nnoremap <buffer> <c-[> :TsuSplitDefinition<CR>
-autocmd FileType typescript nnoremap <buffer> <c-f> :TsuQuickFix<CR>
+" autocmd FileType typescript nnoremap <buffer> <c-]> :TsuDefinition<CR>
+" autocmd FileType typescript nnoremap <buffer> <c-[> :TsuSplitDefinition<CR>
+" autocmd FileType typescript nnoremap <buffer> <c-f> :TsuQuickFix<CR>
 
 " }}}
 
@@ -387,8 +393,8 @@ autocmd FileType xml setlocal nospell
 " Language - Trailing Whitespace {{{
 
 augroup prewrites
-  autocmd!
-  autocmd FileType c,coffee,typescript,cpp,java,javascript,php,python,groovy,vim autocmd BufWritePre * silent! :%s/\s\+$//e | silent! %s#\($\n\s*\)\+\%$##
+	autocmd!
+	autocmd FileType c,coffee,typescript,cpp,java,javascript,php,python,groovy,vim autocmd BufWritePre * silent! :%s/\s\+$//e | silent! %s#\($\n\s*\)\+\%$##
 augroup END
 
 " }}}
@@ -466,8 +472,9 @@ nnoremap <leader>f :NERDTreeFind<cr>
 nnoremap <leader>ff :NERDTreeToggle<cr>
 nnoremap <leader>ft :NERDTree<cr>
 
-let NERDTreeIgnore = ['\.pyc$', 'node_modules[[dir]]', '^.git[[dir]]', 'public\/[[dir]]', 'bower_components[[dir]]']
+let NERDTreeIgnore = ['\.pyc$', 'deps[[dir]]', '_build[[dir]]', 'node_modules[[dir]]', '^.git[[dir]]', 'public\/[[dir]]', 'bower_components[[dir]]']
 
+let NERDTreeWinSize = 46
 " }}}
 
 " Plugin - NERDCommenter {{{
@@ -478,33 +485,208 @@ let g:NERDMapleader             = ',c'
 
 " }}}
 
+" Plugin - COC {{{
+
+" <CR> to confirm completion, use:
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+
+
+" To make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, use:
+
+" inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+" \: "\<CR>"
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+			\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" -----------
+" Map <tab> for trigger completion, completion confirm, snippet expand and jump
+" like VSCode.
+inoremap <silent><expr> <TAB>
+			\ pumvisible() ? coc#_select_confirm() :
+			\ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+			\ <SID>check_back_space() ? "\<TAB>" :
+			\ coc#refresh()
+
+function! s:check_back_space() abort
+	let col = col('.') - 1
+	return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+let g:coc_snippet_prev = '<s-tab>'
+
+nmap <leader>qf :CocAction('doQuickfix')<CR>
+" ------------
+
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+nmap <silent> <C-k> <Plug>(coc-diagnostic-prev)
+nmap <silent> <C-j> <Plug>(coc-diagnostic-next)
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>rf <Plug>(coc-refactor)
+
+autocmd FileType typescript,elixir,html,css nmap <buffer> <c-]> <Plug>(coc-definition)
+autocmd FileType typescript,elixir,html,css nmap <buffer> <c-]>k :split<CR><Plug>(coc-definition)
+autocmd FileType typescript,elixir,html,css nmap <buffer> <c-]>l :vsplit<CR><Plug>(coc-definition)
+
+nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
+
+nnoremap <silent> <space>w  :exe 'CocList -I --normal --input='.expand('<cword>').' words'<CR>
+
+vnoremap <leader>g :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
+nnoremap <leader>g :<C-u>set operatorfunc=<SID>GrepFromSelected<CR>g@
+
+function! s:GrepFromSelected(type)
+	let saved_unnamed_register = @@
+	if a:type ==# 'v'
+		normal! `<v`>y
+	elseif a:type ==# 'char'
+		normal! `[v`]y
+	else
+		return
+	endif
+	let word = substitute(@@, '\n$', '', 'g')
+	let word = escape(word, '| ')
+	let @@ = saved_unnamed_register
+	execute 'CocList grep '.word.' -W'
+endfunction`]`
+
+" grep word under cursor
+command! -nargs=+ -complete=custom,s:GrepArgs Rg exe 'CocList grep '.<q-args>
+
+function! s:GrepArgs(...)
+  let list = ['-S', '-smartcase', '-i', '-ignorecase', '-w', '-word',
+        \ '-e', '-regex', '-u', '-skip-vcs-ignores', '-t', '-extension']
+  return join(list, "\n")
+endfunction
+
+nmap <leader>cr :CocListResume<CR>
+
+" Keymapping for grep word under cursor with interactive mode
+nnoremap <silent> <Leader>cf :exe 'CocList -I --input='.expand('<cword>').' grep -W'<CR>
+
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+
+set cot+=preview
+
+nmap a7 :%s%'.*a7/%'@ark7/%g<CR>
+" }}}
+
 " Plugin - Tagbar {{{
 
 let g:tagbar_ctags_bin          = '/usr/local/bin/ctags'
 
+let g:tagbar_autofocus = 1
+
 nnoremap <silent> <leader>x :TagbarToggle<CR>
+nnoremap <silent> <leader>tj :TagbarOpen j<CR>
 
 let g:tagbar_type_coffee = {
-    \ 'ctagstype' : 'coffee',
-    \ 'kinds'     : [
-        \ 'c:classes',
-        \ 'm:methods',
-        \ 'f:functions',
-        \ 'v:variables',
-        \ 'f:fields',
-    \ ]
-\ }
+			\ 'ctagstype' : 'coffee',
+			\ 'kinds'     : [
+			\ 'c:classes',
+			\ 'm:methods',
+			\ 'f:functions',
+			\ 'v:variables',
+			\ 'f:fields',
+			\ ]
+			\ }
 
+let g:tagbar_type_elixir = {
+			\ 'ctagstype' : 'elixir',
+			\ 'kinds' : [
+			\ 'p:protocols',
+			\ 'm:modules',
+			\ 'e:exceptions',
+			\ 'y:types',
+			\ 'd:delegates',
+			\ 'f:functions',
+			\ 'c:callbacks',
+			\ 'a:macros',
+			\ 't:tests',
+			\ 'i:implementations',
+			\ 'o:operators',
+			\ 'r:records'
+			\ ],
+			\ 'sro' : '.',
+			\ 'kind2scope' : {
+			\ 'p' : 'protocol',
+			\ 'm' : 'module'
+			\ },
+			\ 'scope2kind' : {
+			\ 'protocol' : 'p',
+			\ 'module' : 'm'
+			\ },
+			\ 'sort' : 0
+			\ }
+
+let g:tagbar_type_typescript = {
+			\ 'ctagstype': 'typescript',
+			\ 'kinds': [
+			\ 'c:class',
+			\ 'n:namespace',
+			\ 'f:function',
+			\ 'G:generator',
+			\ 'v:variable',
+			\ 'm:method',
+			\ 'p:property',
+			\ 'i:interface',
+			\ 'g:enum',
+			\ 't:type',
+			\ 'a:alias',
+			\ ],
+			\'sro': '.',
+			\ 'kind2scope' : {
+			\ 'c' : 'class',
+			\ 'n' : 'namespace',
+			\ 'i' : 'interface',
+			\ 'f' : 'function',
+			\ 'G' : 'generator',
+			\ 'm' : 'method',
+			\ 'p' : 'property',
+			\},
+			\ }
+
+" let g:tagbar_type_typescript = {
+" \ 'ctagsbin' : 'tstags',
+" \ 'ctagsargs' : '-f-',
+" \ 'kinds': [
+" \ 'e:enums:0:1',
+" \ 'f:function:0:1',
+" \ 't:typealias:0:1',
+" \ 'M:Module:0:1',
+" \ 'I:import:0:1',
+" \ 'i:interface:0:1',
+" \ 'C:class:0:1',
+" \ 'm:method:0:1',
+" \ 'p:property:0:1',
+" \ 'v:variable:0:1',
+" \ 'c:const:0:1',
+" \ ],
+" \ 'sort' : 0
+" \ }
 " }}}
 
 " Plugin - Ctrlp {{{
 
 let g:ctrlp_max_files           = 0
 let g:ctrlp_custom_ignore       = {
-  \ 'dir': '\v[\/](.git|.hg|.svn|build|_codegen|tmp|node_modules|bower_components|public|doc|dist)$',
-  \ 'file': '\v\.(exe|so|dll|class|jar|war|pyc|pyo|pyd)$',
-  \ 'link': 'some_bad_symbolic_links',
-  \ }
+			\ 'dir': '\v[\/](.git|.hg|.svn|build|_codegen|tmp|_build|deps|node_modules|bower_components|public|doc|dist)$',
+			\ 'file': '\v\.(exe|so|dll|class|jar|war|pyc|pyo|pyd)$',
+			\ 'link': 'some_bad_symbolic_links',
+			\ }
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_use_caching         = 1
 let g:ctrlp_switch_buffer       = 'et'
@@ -528,6 +710,10 @@ let g:airline#extensions#tabline#fnamecollapse   = 0
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
 
+" }}}
+
+" Plugin - Eleline {{{
+set laststatus=2
 " }}}
 
 " Plugin - Gundo {{{
@@ -569,14 +755,14 @@ vmap <Leader>tf :Tabularize /from<CR>
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
 
 function! s:align()
-  let p = '^\s*|\s.*\s|\s*$'
-  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
-    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
-    Tabularize/|/l1
-    normal! 0
-    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-  endif
+	let p = '^\s*|\s.*\s|\s*$'
+	if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+		let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+		let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+		Tabularize/|/l1
+		normal! 0
+		call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+	endif
 endfunction
 
 " }}}
@@ -610,15 +796,30 @@ let g:EasyMotion_use_smartsign_us = 1 " US layout
 " }}}
 
 " Plugin - ale {{{
+"
+let g:ale_proto_protoc_gen_lint_options = '-I /Users/yz/workspace/ark7-events/src/proto'
 
 let g:ale_lint_delay = 200
 " let g:ale_lint_on_text_changed = 'normal'
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
+" nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+" nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
-" let g:ale_linters = {
-" \   'typescript': ['tslint'],
-" \}
+let g:ale_linters = {
+			\   'javascript': [],
+			\   'typescript': [],
+			\   'elixir': [],
+			\   'html': [],
+			\   'css': [],
+			\   'scss': [],
+			\   'rubya': [],
+			\   'ruby': [],
+			\}
+
+let g:ale_elixir_elixir_ls_config = {
+			\   'elixirLS': {
+			\     'dialyzerEnabled': v:false,
+			\   },
+			\}
 
 " }}}
 
@@ -642,8 +843,8 @@ let g:syntastic_java_checkers             = [ ]
 " let g:syntastic_python_pylint_args        = '--indent-string="  "'
 
 let g:syntastic_mode_map                  = { "mode": "active",
-                                            \ "active_filetypes": [],
-                                            \ "passive_filetypes": [ "typescript" ] }
+			\ "active_filetypes": [],
+			\ "passive_filetypes": [ "typescript" ] }
 
 " let g:syntastic_typescript_checkers = [ 'tsuquyomi' ]
 let g:syntastic_typescript_checkers = [ ]
@@ -718,8 +919,8 @@ let g:UltiSnipsEditSplit             = "vertical"
 " Plugin - Toggle mode {{{
 
 " function ToggleMode()
-  " execute "SyntasticToggleMode"
-  " call sy#toggle()
+" execute "SyntasticToggleMode"
+" call sy#toggle()
 " endfunction
 
 " nmap <silent> <leader>s :call ToggleMode()<CR>
@@ -735,10 +936,10 @@ let g:ycm_enable_diagnostic_signs  = 1
 let g:ycm_show_diagnostics_ui      = 0
 
 if !exists("g:ycm_semantic_triggers")
-  let g:ycm_semantic_triggers = {}
+	let g:ycm_semantic_triggers = {}
 endif
 let g:ycm_semantic_triggers['typescript'] = ['.']
-set completeopt-=preview
+" set completeopt-=preview
 " set completeopt-=menu
 
 let g:ycm_filetype_specific_completion_to_disable = { 'javascript': 1 }
@@ -763,30 +964,30 @@ let g:JavaImpPaths .= ":" . $HOME . "/vim/JavaImp/jmplst/jdk.jmplst"
 let g:JavaImpPathSep = ':'
 let g:JavaImpDataDir = $HOME . "/vim/JavaImp"
 let g:JavaImpTopImports = [
-    \ 'android\..*',
-    \ 'java\..*',
-    \ 'javax\..*',
-    \ 'org\..*',
-    \ 'voldemort\..*',
-    \ 'com\.google\..*',
-    \ 'com\..*',
-    \ ]
+			\ 'android\..*',
+			\ 'java\..*',
+			\ 'javax\..*',
+			\ 'org\..*',
+			\ 'voldemort\..*',
+			\ 'com\.google\..*',
+			\ 'com\..*',
+			\ ]
 let g:JavaImpStaticImportsFirst = 1
 let g:JavaImpSortPkgSep = 1
 
 " let g:JavaImpDocViewer = "lynx"
 let g:JavaImpDocViewer = "w3m"
 let g:JavaImpDocPaths =
-    \ $HOME . "/vim/JavaImp/docs/api:" .
-    \ $HOME . "/Library/Android/sdk/docs/reference"
+			\ $HOME . "/vim/JavaImp/docs/api:" .
+			\ $HOME . "/Library/Android/sdk/docs/reference"
 
 " }}}
 
 " Plugin - javadoc.vim {{{
 
 let g:javadoc_path =
-    \ $HOME . "/vim/JavaImp/docs/api:" .
-    \ $HOME . "/Library/Android/sdk/docs/reference"
+			\ $HOME . "/vim/JavaImp/docs/api:" .
+			\ $HOME . "/Library/Android/sdk/docs/reference"
 
 " }}}
 
@@ -901,7 +1102,7 @@ autocmd FileType typescript nnoremap <buffer> <leader>si :SortImport<CR>
 " Tail - source .vimrc.local {{{
 
 if filereadable(glob("~/.vimrc.local"))
-  source ~/.vimrc.local
+	source ~/.vimrc.local
 endif
 
 " }}}
@@ -913,17 +1114,17 @@ hi Search cterm=NONE ctermfg=grey ctermbg=blue
 
 " Test {{{
 augroup vimrc_autocmd
-  autocmd!
-  "toggle quickfix window
-  autocmd BufReadPost quickfix map <buffer> <leader>qq :cclose<cr>|map <buffer> <c-p> <up>|map <buffer> <c-n> <down>
+	autocmd!
+	"toggle quickfix window
+	autocmd BufReadPost quickfix map <buffer> <leader>qq :cclose<cr>|map <buffer> <c-p> <up>|map <buffer> <c-n> <down>
 
-  autocmd FileType unite call s:unite_settings()
-  " obliterate unite buffers (marks especially).
-  autocmd BufLeave \[unite\]* if "nofile" ==# &buftype | setlocal bufhidden=wipe | endif
+	autocmd FileType unite call s:unite_settings()
+	" obliterate unite buffers (marks especially).
+	autocmd BufLeave \[unite\]* if "nofile" ==# &buftype | setlocal bufhidden=wipe | endif
 
-  " Jump to the last position when reopening a file
-  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+	" Jump to the last position when reopening a file
+	autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
-  " ...etc...
+	" ...etc...
 augroup END
 " }}}
