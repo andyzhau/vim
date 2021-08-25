@@ -91,19 +91,19 @@ def InstallVimConfiguration():
   LinkConfigFiles('.vim')
   LinkConfigFiles('.vimrc')
 
-  vundle_path = os.path.expanduser('~/.vim/bundle/Vundle.vim')
+  # vundle_path = os.path.expanduser('~/.vim/bundle/Vundle.vim')
 
-  if not os.path.exists(vundle_path):
+  # if not os.path.exists(vundle_path):
 
-    subprocess.call([
-        'git', 'clone', 'https://github.com/gmarik/Vundle.vim.git', vundle_path])
-    subprocess.call([
-        'vim', '+PluginInstall', '+qall'])
+  #  subprocess.call([
+  #      'git', 'clone', 'https://github.com/gmarik/Vundle.vim.git', vundle_path])
+  #  subprocess.call([
+  #      'vim', '+PluginInstall', '+qall'])
 
-    subprocess.call(
-        ['./install.sh', '--clang-completer', '--gocode-completer',
-         '--tern-completer', '--gocode-completer'],
-        cwd=os.path.expanduser(os.path.join('~/.vim/bundle/YouCompleteMe')))
+  #  subprocess.call(
+  #      ['./install.sh', '--clang-completer', '--gocode-completer',
+  #       '--tern-completer', '--gocode-completer'],
+  #      cwd=os.path.expanduser(os.path.join('~/.vim/bundle/YouCompleteMe')))
 
 
 if __name__ == '__main__':

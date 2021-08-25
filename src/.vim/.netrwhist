@@ -1,4 +1,12 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =2
-let g:netrw_dirhist_2='/Users/yz/workspace/mono/deps/dwolla/lib/dwolla'
-let g:netrw_dirhist_1='/Users/yz/workspace/brontosaurus/projects/a7/ui-auth/src/lib/reset-password-form'
+let g:netrw_dirhistcnt =0
+let g:netrw_dirhist_0='/Users/yz/workspace/allosaurus/projects/advanced-models/src/trail-logs'
+let g:netrw_dirhist_9='/Users/yz/Google Drive/Products/SRE/dbs-pass/sandbox'
+let g:netrw_dirhist_8='/Users/yz/Google Drive/Products/SRE/dbs-pass'
+let g:netrw_dirhist_7='/Users/yz/Google Drive/Products/SRE/dbs-pass/production'
+let g:netrw_dirhist_6='/Users/yz/workspace/brontosaurus/projects/admin/src/app/marketing/campaigns/campaign-card'
+let g:netrw_dirhist_5='/Users/yz/workspace/allosaurus/dist/projects/@ark7/allosaurus-models/journeys/segments'
+let g:netrw_dirhist_4='/Users/yz/workspace/allosaurus/projects/allosaurus-models/src/journeys/segments'
+let g:netrw_dirhist_3='/Users/yz/workspace/allosaurus/projects/advanced-models/src/journeys/operations'
+let g:netrw_dirhist_2='/Users/yz/workspace/allosaurus/projects/core-business-models/src/marketings/gifts'
+let g:netrw_dirhist_1='/Users/yz/workspace/allosaurus/projects/advanced-models/src/marketings/sales'
