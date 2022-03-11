@@ -112,7 +112,6 @@ if __name__ == '__main__':
 
   LinkConfigFiles('.inputrc')
   LinkConfigFiles('.screenrc')
-  LinkConfigFiles('.zshrc')
   LinkConfigFiles('.tmux.conf')
 
   InstallBashConfiguration()
