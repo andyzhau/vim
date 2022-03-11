@@ -32,15 +32,18 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
 Plug 'schickling/vim-bufonly'
 Plug 'Chiel92/vim-autoformat'
 Plug 'svermeulen/vim-easyclip'
 Plug 'ruanyl/vim-sort-imports'
+Plug 'vim-airline/vim-airline-themes'
 " Plug 'Quramy/tsuquyomi'
 " Plug 'scrooloose/syntastic'
 Plug 'w0rp/ale'
+Plug 'liuchengxu/vista.vim'
 
+Plug 'samoshkin/vim-mergetool'
 Plug 'junegunn/goyo.vim'
 " Plug 'SirVer/ultisnips'
 
@@ -52,7 +55,7 @@ Plug 'junegunn/goyo.vim'
 " Plug 'amix/vim-zenroom2'
 
 " Plug 'mhinz/vim-signify'
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/npm.nvim', {'do' : 'npm install'}
 
 " automatic closing of quotes, parenthesis, brackets, etc.
@@ -108,7 +111,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'solarnz/thrift.vim'
 Plug 'syngan/vim-vimlint'
 Plug 'tfnico/vim-gradle'
-Plug 'tpope/vim-markdown'
+" Plug 'tpope/vim-markdown'
 Plug 'ynkdir/vim-vimlparser'
 " Plug 'hail2u/vim-css3-syntax'
 Plug 'elixir-editors/vim-elixir'
@@ -155,7 +158,9 @@ set colorcolumn=+1
 set textwidth=80
 
 " Clipboard
-set clipboard=unnamedplus
+" set clipboard=unnamedplus
+" set clipboard=unnamed,unnamedplus
+set clipboard^=unnamed,unnamedplus
 
 " yank to clipboard
 " if has("clipboard")
@@ -229,6 +234,42 @@ set cursorline
 " uncomment to highlight the current column use
 " set cursorcolumn
 
+" sessions
+let g:session_dir = '~/.vim/sessions'
+exec 'nnoremap <Leader>ss :mks! ' . g:session_dir . '/<C-R>=expand("%:.:s?/.*??.")<CR>.vim<C-D>'
+exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/<C-R>=expand("%:.:s?/.*??.")<CR>.vim<C-D>'
+
+function BeforeQuit()
+  if bufwinnr("coc-explorer") > 0
+    execute 'CocCommand explorer'
+    execute 'sleep 200m'
+  endif
+endfunction
+
+function BeforeEnter()
+  execute 'CocCommand explorer --no-toggle'
+  execute 'sleep 1000m'
+  " let l:answer = nr2char(getchar())
+  execute 'wincmd ='
+  if bufexists(1)
+    for l in range(1, bufnr('$'))
+      " echo bufwinnr(l)
+      " if bufwinnr(l) == -1
+        " exec 'sbuffer ' . l
+      " endif
+    endfor
+  endif
+endfunction
+
+" Save session on quitting Vim
+autocmd VimLeave * call BeforeQuit()
+autocmd VimLeave * exec 'mks! ' . g:session_dir . '/' . expand("%:.:s?/.*??.") . '.vim'
+
+" Restore session on starting Vim
+" autocmd VimEnter * exec 'sleep 100m'
+" autocmd VimEnter * exec ':so ' . g:session_dir. '/' . expand("%:.:s?/.*??.") . '.vim'
+" autocmd VimEnter * call BeforeEnter()
+
 " }}}
 
 " UI {{{
@@ -272,7 +313,7 @@ nmap <leader>ww :w!<CR>
 " quite
 imap <silent> <leader>q <ESC>:q<CR>
 nmap <silent> <leader>q :q<CR>
-nmap <silent> <leader>a :qa<CR>
+" nmap <silent> <leader>a :qa<CR>
 nmap <silent> <leader>aa :qa!<CR>
 
 " window switch
@@ -368,6 +409,14 @@ let g:tsuquyomi_completion_detail = 1
 
 " }}}
 
+" Language Scala {{{
+
+au BufRead,BufNewFile *.sbt set filetype=scala
+
+autocmd FileType python let b:coc_root_patterns = ['.git']
+
+" }}}
+
 " Language Vim {{{
 
 autocmd FileType vim setlocal foldmethod=marker
@@ -387,7 +436,9 @@ autocmd FileType python setlocal foldmethod=indent
 autocmd FileType html,xml setlocal foldmethod=indent
 autocmd FileType xml setlocal nospell
 
-" autocmd Filetype html setlocal textwidth=160
+autocmd Filetype html setlocal textwidth=120
+
+autocmd BufWrite *.html :Autoformat
 
 " }}}
 
@@ -417,6 +468,12 @@ autocmd BufRead,BufNewFile,BufEnter /Users/yizhen/gocode/*.thrift setlocal ts=4 
 
 " autocmd Filetype java setlocal omnifunc=eclim#php#complete#CodeComplete
 autocmd Filetype java setlocal textwidth=120
+
+" }}}
+
+" Language - Markdown {{{
+
+autocmd Filetype markdown setlocal textwidth=160
 
 " }}}
 
@@ -474,9 +531,9 @@ nnoremap <leader>f <Cmd>CocCommand explorer --no-toggle<CR>
 nnoremap <leader>ff :NERDTreeToggle<cr>
 nnoremap <leader>ft :NERDTree<cr>
 
-let NERDTreeIgnore = ['\.pyc$', 'deps[[dir]]', '_build[[dir]]', 'node_modules[[dir]]', '^.git[[dir]]', 'public\/[[dir]]', 'bower_components[[dir]]']
+" let NERDTreeIgnore = ['\.pyc$', 'deps[[dir]]', '_build[[dir]]', 'node_modules[[dir]]', '^.git[[dir]]', 'public\/[[dir]]', 'bower_components[[dir]]']
 
-let NERDTreeWinSize = 46
+" let NERDTreeWinSize = 46
 " }}}
 
 " Plugin - NERDCommenter {{{
@@ -533,6 +590,18 @@ nmap <leader>qf  <Plug>(coc-fix-current)
 nmap <leader>cl  <Plug>(coc-codelens-action)
 " ------------
 
+" Remap for do codeAction of selected region
+" function! s:cocActionsOpenFromSelected(type) abort
+  " execute 'CocCommand actions.open ' . a:type
+" endfunction
+" xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
+" nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
+
+" vmap <leader>s <Plug>(coc-codeaction-selected)
+" nmap <leader>s <Plug>(coc-codeaction-selected)
+" nmap <leader>aw :CocAction('runCommand', 'cSpell.addWordToUserDictionary')
+" nmap <leader>ai :CocAction('runCommand', 'cSpell.addIgnoreWordToUser')
+
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -549,11 +618,9 @@ nmap <silent> gr <Plug>(coc-references)
 nmap <leader>rn <Plug>(coc-rename)
 nmap <leader>rf <Plug>(coc-refactor)
 
-autocmd FileType typescript,elixir,html,css nmap <buffer> <c-]> <Plug>(coc-definition)
-autocmd FileType typescript,elixir,html,css nmap <buffer> <c-]>k :split<CR><Plug>(coc-definition)
-autocmd FileType typescript,elixir,html,css nmap <buffer> <c-]>l :vsplit<CR><Plug>(coc-definition)
-
-nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
+autocmd FileType typescript,elixir,html,css,scala nmap <buffer> <c-]> <Plug>(coc-definition)
+autocmd FileType typescript,elixir,html,css,scala nmap <buffer> <c-]>k :split<CR><Plug>(coc-definition)
+autocmd FileType typescript,elixir,html,css,scala nmap <buffer> <c-]>l :vsplit<CR><Plug>(coc-definition)
 
 nnoremap <silent> <space>w  :exe 'CocList -I --normal --input='.expand('<cword>').' words'<CR>
 
@@ -595,6 +662,66 @@ nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 set cot+=preview
 
 nmap a7 :%s%\('.*a7/\\|'.*projects/@ark7/\)%'@ark7/%g<CR>
+
+nnoremap <leader>j :call coc#float#scroll(1)<CR>
+nnoremap <leader>k :call coc#float#scroll(0)<CR>
+" }}}
+
+" Plugin - COC - Scala {{{
+
+autocmd FileType scala let b:coc_root_patterns = ['.git', '.sbt']
+
+" }}}
+
+" Plugin - COC - Yank {{{
+
+nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
+
+" }}}
+
+" Plugin - COC - explorer {{{
+
+nmap <leader>f :CocCommand explorer --no-toggle<CR>
+
+" }}}
+
+" Plugin - COC - SmartF {{{
+
+" press <esc> to cancel.
+nmap f <Plug>(coc-smartf-forward)
+nmap F <Plug>(coc-smartf-backward)
+nmap ; <Plug>(coc-smartf-repeat)
+nmap , <Plug>(coc-smartf-repeat-opposite)
+
+augroup Smartf
+  autocmd User SmartfEnter :hi Conceal ctermfg=220 guifg=#6638F0
+  autocmd User SmartfLeave :hi Conceal ctermfg=239 guifg=#504945
+augroup end
+" }}}
+
+" Plugin - COC - Prettier {{{
+
+vmap <leader>p  <Plug>(coc-format-selected)
+nmap <leader>p  <Plug>(coc-format-selected)
+"
+" }}}
+
+" Plugin - COC - Git {{{
+
+" navigate chunks of current buffer
+nmap [g <Plug>(coc-git-prevchunk)
+nmap ]g <Plug>(coc-git-nextchunk)
+" show chunk diff at current position
+nmap gs <Plug>(coc-git-chunkinfo)
+" show commit contains current position
+nmap gc <Plug>(coc-git-commit)
+" create text object for git chunks
+omap ig <Plug>(coc-git-chunk-inner)
+xmap ig <Plug>(coc-git-chunk-inner)
+omap ag <Plug>(coc-git-chunk-outer)
+xmap ag <Plug>(coc-git-chunk-outer)
+" nnoremap <silent> <space>g  :<C-u>CocList --normal gstatus<CR>
+
 " }}}
 
 " Plugin - Tagbar {{{
@@ -696,7 +823,7 @@ let g:tagbar_type_typescript = {
 
 let g:ctrlp_max_files           = 0
 let g:ctrlp_custom_ignore       = {
-			\ 'dir': '\v[\/](.git|.hg|.svn|build|_codegen|tmp|_build|deps|node_modules|bower_components|public|doc|dist)$',
+			\ 'dir': '\v[\/](.git|.hg|.svn|build|_codegen|tmp|_build|deps|node_modules|bower_components|public|doc|dist|coverage|integTest|target)$',
 			\ 'file': '\v\.(exe|so|dll|class|jar|war|pyc|pyo|pyd)$',
 			\ 'link': 'some_bad_symbolic_links',
 			\ }
@@ -810,7 +937,7 @@ let g:EasyMotion_use_smartsign_us = 1 " US layout
 
 " Plugin - ale {{{
 "
-let g:ale_proto_protoc_gen_lint_options = '-I /Users/yz/workspace/ark7-events/src/proto'
+let g:ale_proto_protoc_gen_lint_options = '-I /Users/yz/workspace/ark7-events/src/proto -I /Users/yz/workspace/data-proc/projects/protos/src/main/protobuf'
 
 let g:ale_lint_delay = 200
 " let g:ale_lint_on_text_changed = 'normal'
@@ -826,6 +953,7 @@ let g:ale_linters = {
 			\   'scss': [],
 			\   'rubya': [],
 			\   'ruby': [],
+      \   'scala': [],
 			\}
 
 let g:ale_elixir_elixir_ls_config = {
@@ -878,6 +1006,7 @@ let g:syntastic_vim_checkers            = []
 
 " Plugin - Goyo {{{
 
+let g:goyo_width = 82
 nnoremap <silent> <leader>z :Goyo<cr>
 
 function! s:goyo_enter()
@@ -1016,11 +1145,11 @@ nnoremap <leader>t :Unite buffer file_rec<CR>
 nnoremap gm m
 
 let g:EasyClipShareYanks = 1
-let g:EasyClipAutoFormat = 1
+" let g:EasyClipAutoFormat = 1
 
-let g:EasyClipUseSubstituteDefaults = 1
+" let g:EasyClipUseSubstituteDefaults = 1
 
-let g:EasyClipUsePasteToggleDefaults = 0
+" let g:EasyClipUsePasteToggleDefaults = 0
 
 " nmap <c-f> <plug>EasyClipSwapPasteForward
 " nmap <c-d> <plug>EasyClipSwapPasteBackwards
@@ -1029,11 +1158,11 @@ let g:EasyClipUsePasteToggleDefaults = 0
 
 " Plugin = VimAutoformat {{{
 
-let g:formatdef_html_beautify = '"html-beautify --indent-size=".&shiftwidth." --wrap-attributes=force-aligned --wrap-line-length=81"'
-let g:formatters_html = ['html_beautify']
+let g:formatdef_htmlbeautify = '"html-beautify --indent-size=2 --wrap-attributes=force-aligned --wrap-line-length=121"'
+let g:formatters_html = ['htmlbeautify']
 
-let g:formatdef_prettier = '"prettier --parser=typescript --single-quote --trailing-comma=all"'
-let g:formatters_typescript = ['prettier']
+" let g:formatdef_prettier = '"prettier --parser=typescript --single-quote --trailing-comma=all"'
+" let g:formatters_typescript = ['prettier']
 
 " let g:autoformat_verbosemode=1
 " let verbose=1
@@ -1095,6 +1224,13 @@ let g:prettier#config#single_quote = 'true'
 let g:prettier#config#trailing_comma = 'all'
 let g:prettier#config#bracket_spacing = 'true'
 let g:prettier#exec_cmd_async = 1
+
+" }}}
+
+" Plugin - mergetool {{{
+
+let g:mergetool_layout = 'mr'
+let g:mergetool_prefer_revision = 'local'
 
 " }}}
 

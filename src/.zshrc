@@ -62,10 +62,11 @@ ZSH_DISABLE_COMPFIX="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git ssh-agent
+  git ssh-agent zsh-autosuggestions
 )
 
 source $ZSH/oh-my-zsh.sh
+# source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # User configuration
 
@@ -98,23 +99,17 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 export NVM_DIR="$HOME/.nvm"
 . "/usr/local/opt/nvm/nvm.sh" alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/usr/local/bin/google-cloud-sdk/path.zsh.inc' ]; then . '/usr/local/bin/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/usr/local/bin/google-cloud-sdk/completion.zsh.inc' ]; then . '/usr/local/bin/google-cloud-sdk/completion.zsh.inc'; fi
-
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin:$HOME/.mix/escripts"
+# export PATH="$PATH:$HOME/.rvm/bin:$HOME/.mix/escripts"
 
-\. ~/.rvm/scripts/rvm
+# \. ~/.rvm/scripts/rvm
 
 alias v="nvim"
 
-nvm use 12
+nvm use default
 export GOOGLE_APPLICATION_CREDENTIALS=/Users/yz/workspace/dogwood-courier-217506-8ed699801161.json
-export NPM_TOKEN=7ae168ed-b71f-4c9d-b780-41a7616ada5a
+export NPM_TOKEN=f487abfa-2586-4a95-91ff-f34d2d3545e4
 export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 
 ###-tns-completion-start-###
@@ -123,5 +118,19 @@ if [ -f /Users/yz/.tnsrc ]; then
 fi
 ###-tns-completion-end-###
 
+HISTSIZE=999999999
+SAVEHIST=$HISTSIZE
 
-export PATH="$PATH:/Users/yz/development/flutter/bin"
+export EDITOR=nvim
+export PATH="$PATH:/Users/yz/development/flutter/bin:/Users/yz/.mix/escripts"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/yz/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/yz/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/yz/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/yz/google-cloud-sdk/completion.zsh.inc'; fi
+# export PATH="/usr/local/opt/protobuf@3.6/bin:$PATH"
+
+export AIRFLOW_HOME=~/airflow
+
+. /usr/local/opt/asdf/asdf.sh
