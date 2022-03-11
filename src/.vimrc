@@ -24,10 +24,11 @@ Plug 'honza/vim-snippets'
 Plug 'kien/ctrlp.vim'
 Plug 'mileszs/ack.vim'
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree' ", { 'on': 'NERDTreeToggle' }
+" Plug 'scrooloose/nerdtree' ", { 'on': 'NERDTreeToggle' }
 Plug 'sjl/gundo.vim'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
@@ -102,7 +103,7 @@ Plug 'kchmck/vim-coffee-script'
 Plug 'mattn/emmet-vim'
 Plug 'moll/vim-node'
 Plug 'motus/pig.vim'
-Plug 'othree/html5.vim'
+" Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'solarnz/thrift.vim'
 Plug 'syngan/vim-vimlint'
@@ -468,7 +469,8 @@ let g:go_def_mapping_enabled = 0
 
 " Plugin - NERDTree {{{
 
-nnoremap <leader>f :NERDTreeFind<cr>
+" nnoremap <leader>f :NERDTreeFind<cr>
+nnoremap <leader>f <Cmd>CocCommand explorer --no-toggle<CR>
 nnoremap <leader>ff :NERDTreeToggle<cr>
 nnoremap <leader>ft :NERDTree<cr>
 
@@ -517,7 +519,18 @@ endfunction
 let g:coc_snippet_next = '<tab>'
 let g:coc_snippet_prev = '<s-tab>'
 
-nmap <leader>qf :CocAction('doQuickfix')<CR>
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Run the Code Lens action on the current line.
+nmap <leader>cl  <Plug>(coc-codelens-action)
 " ------------
 
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
@@ -581,7 +594,7 @@ nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 
 set cot+=preview
 
-nmap a7 :%s%'.*a7/%'@ark7/%g<CR>
+nmap a7 :%s%\('.*a7/\\|'.*projects/@ark7/\)%'@ark7/%g<CR>
 " }}}
 
 " Plugin - Tagbar {{{
@@ -1066,7 +1079,7 @@ let g:gitgutter_async = 1
 
 " Plugin - fugitive {{{
 
-nmap <leader>gs :Gstatus<CR>
+nmap <leader>gs :Git<CR>
 nmap <leader>gb :Gblame<CR>
 nmap <leader>gd :Gdiff<CR>
 nmap <leader>gaa :Git add --all<CR>
@@ -1087,7 +1100,7 @@ let g:prettier#exec_cmd_async = 1
 
 " Plugin - vim-sort-imports {{{
 "
-let g:import_sort_auto = 0
+let g:import_sort_auto = 1
 
 autocmd FileType typescript nnoremap <buffer> <leader>si :SortImport<CR>
 
